@@ -52,8 +52,22 @@
                     </el-tab-pane>
                     <el-tab-pane label="测试场景">
                         <div class="hello">
-                            
-                            // <tree-grid :columns="columns" :tree-structure="true" :data-source="dataSource"></tree-grid>
+                            <el-table :data="testscene" border>
+                                <el-table-column type="index" min-width="10%"></el-table-column>
+                                <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
+                                <el-table-column prop="TestSuite" label="场景名称" min-width="30%"></el-table-column>
+                                <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" min-width="30%"></el-table-column>
+                                <el-table-column label="操作" min-width="30%">
+                             
+                           
+                                    <template scope="scope">
+                                        <el-button type="primary" size="small" @click="deltestdata11(scope.$index,scope.row)">删除</el-button>
+                                        <el-button type="primary" size="small" @click="testsceneExpand11(scope.row)">运行</el-button>
+                                    </template>
+                                
+                                </el-table-column>
+                            </el-table>
+                           
                         </div>
                         <div class="totalDiv">
                             数量：{{totalCount}} 金额： {{totalMoney}}元
@@ -162,7 +176,7 @@
                                 <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" min-width="30%"></el-table-column>
                                 <el-table-column label="操作" min-width="30%">
                                     <template scope="scope">
-                                        <el-button type="primary" size="small" @click="deltestsericon(scope.row)">组合</el-button>
+                                        <el-button type="primary" size="small" @click="addtestscene(scope.row)">组合</el-button>
                                         <el-button type="primary" size="small" @click="addSuiteList(scope.row)">增加</el-button>
                                         <el-button type="primary" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
                                     </template>
@@ -241,12 +255,13 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
-import TreeGrid from '../common/TreeGrid.vue'
 export default {
     name: 'Pos',
     data() {
-        return {
+        return { 
+            
             input: '',
+            testscene:[],
             index: 0,
             showRight: false,
             show2Right: false,
@@ -1705,10 +1720,26 @@ export default {
             })
 
         },
+        deltestdata11(index, testcase){
+            console.log(index)
+            this.testscene.splice(index,1)
+            this.$nextTick(function () {
+
+            })
+
+        },
+
         deltestdata(index, testcase){
             console.log(index)
             this.mydata1[0].testdata.splice(index,1)
             this.$nextTick(function () {
+
+            })
+
+        },
+        addtestscene(testsuite){
+          this.testscene.push(testsuite)
+          this.$nextTick(function () {
 
             })
 
@@ -1747,7 +1778,7 @@ export default {
         }
     },
     components: {
-        TreeGrid
+        
     }
 }
 </script>
