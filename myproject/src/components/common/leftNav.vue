@@ -3,23 +3,23 @@
     <ul>
       <li>
         <i class="icon iconfont icon-goumai"></i>
-        <div>收银</div>
+        <div>测试</div>
       </li>
       <li>
         <i class="icon iconfont icon-dianpu"></i>
-        <div>店铺</div>
+        <div>测试</div>
       </li>
       <li>
         <i class="icon iconfont icon-hanbao"></i>
-        <div>商品</div>
+        <div>测试</div>
       </li>
       <li>
         <i class="icon iconfont icon-huiyuanqia"></i>
-        <div>会员</div>
+        <div>测试</div>
       </li>
       <li>
         <i class="icon iconfont icon-gongnengjianyi"></i>
-        <div>统计</div>
+        <div>测试</div>
       </li>
     </ul>
   </div>
