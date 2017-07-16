@@ -25,6 +25,17 @@
                                 <span class="userlogininfo">{{mydata1[0].userID}}</span>
                             </div>
                         </div>
+                        <div class="filter">
+                        <el-input  class="input" v-model="input"  size="small" width="30px"placeholder="请输入筛选接口">
+                        </el-input>
+                        <el-button class="searchbutton"  size="small" type="success" @click="search(input)">搜索
+                        </el-button>
+                        <el-button  class="searchbutton" size="small" type="danger"  @click="update()">更新
+                        </el-button></div>
+                        
+                        
+                         
+                         
                         <el-table :data="mydata1[0].testdata" border>
                             <el-table-column type="index" min-width="15%"></el-table-column>
                             <el-table-column prop="id" label="序号" size="small" min-width="15%"></el-table-column>
@@ -32,7 +43,7 @@
                             <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
                             <el-table-column label="操作" min-width="30%">
                                 <template scope="scope">
-                                    <el-button type="primary" size="small" @click="delSingleGoods(scope.row)">删除</el-button>
+                                    <el-button type="primary" size="small" @click="deltestdata(scope.$index, scope.row)">删除</el-button>
                                     <el-button type="primary" size="small" @click="addList(scope.row)">增加</el-button>
                                     <el-button type="primary" size="small" @click="showTestDetail(scope.row)">展示</el-button>
                                 </template>
@@ -41,7 +52,8 @@
                     </el-tab-pane>
                     <el-tab-pane label="测试场景">
                         <div class="hello">
-                            <tree-grid :columns="columns" :tree-structure="true" :data-source="dataSource"></tree-grid>
+                            
+                            // <tree-grid :columns="columns" :tree-structure="true" :data-source="dataSource"></tree-grid>
                         </div>
                         <div class="totalDiv">
                             数量：{{totalCount}} 金额： {{totalMoney}}元
@@ -150,7 +162,7 @@
                                 <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" min-width="30%"></el-table-column>
                                 <el-table-column label="操作" min-width="30%">
                                     <template scope="scope">
-                                        <el-button type="primary" size="small" @click="delSingleGoods(scope.row)">删除</el-button>
+                                        <el-button type="primary" size="small" @click="deltestsericon(scope.row)">组合</el-button>
                                         <el-button type="primary" size="small" @click="addSuiteList(scope.row)">增加</el-button>
                                         <el-button type="primary" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
                                     </template>
@@ -234,6 +246,7 @@ export default {
     name: 'Pos',
     data() {
         return {
+            input: '',
             index: 0,
             showRight: false,
             show2Right: false,
@@ -1632,6 +1645,12 @@ export default {
             this.fold = true
 
         },
+        update() {
+            this.mydata1=JSON.parse(JSON.stringify(this.olddata))
+            this.$nextTick(function () {
+
+            })
+        },
         addOrderList(goods) {
             this.totalMoney = 0
             this.totalCount = 0
@@ -1663,6 +1682,35 @@ export default {
             this.show2Right = true
             this.often2Goods = testCase
 
+
+        },
+        search(input){
+            let test=[]
+            this.mydata1[0].testdata.forEach(
+                function(val,index,arr){
+                    if(arr[index].name.indexOf(input)!==-1){
+                        
+                       test.push(arr[index])
+                    }
+                    
+                }
+                
+                
+       
+            )
+            console.log(test.length)
+            this.mydata1[0].testdata=test
+             this.$nextTick(function () {
+
+            })
+
+        },
+        deltestdata(index, testcase){
+            console.log(index)
+            this.mydata1[0].testdata.splice(index,1)
+            this.$nextTick(function () {
+
+            })
 
         },
         deltestcase(index, testcase) {
@@ -1818,5 +1866,20 @@ export default {
 .suitesize {
     font-size: 20px;
     font-weight: 700;
+}
+.filter{
+    width: 100%;
+    height: 50px;
+    background: rgba(7, 17, 27, 0.8);
+    border-bottom: 1px solid #D3dce6;
+    background-color: #F9FAFC;
+
+}
+.input {
+    width:200px;
+    padding: 10px 0 5px 20px;
+}
+.searchbutton{
+    padding: 10px 10px 5px 10px
 }
 </style>
