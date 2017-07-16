@@ -61,8 +61,8 @@
                              
                            
                                     <template scope="scope">
-                                        <el-button type="primary" size="small" @click="deltestdata11(scope.$index,scope.row)">删除</el-button>
-                                        <el-button type="primary" size="small" @click="testsceneExpand11(scope.row)">运行</el-button>
+                                        <el-button type="danger" size="small" @click="deltestdata11(scope.$index,scope.row)">删除</el-button>
+                                        <el-button type="primary" size="small" @click="runtestscene(scope.row)">运行</el-button>
                                     </template>
                                 
                                 </el-table-column>
@@ -70,7 +70,7 @@
                            
                         </div>
                         <div class="totalDiv">
-                            数量：{{totalCount}} 金额： {{totalMoney}}元
+                            <el-button type="success" size="small" min-width="30%" @click="runAll(testscene)">全部运行</el-button>
                         </div>
                         <div class="div-btn">
                             <el-button type="warning">挂单</el-button>
@@ -148,7 +148,27 @@
             <div class="addtestList-wrapper" v-show="fold">
                 <div class="title">
                     <span class="suitesize">添加到场景</span>
-                    <el-button type="primary" size="small" class="save" @click="quit()">退出</el-button>
+                    <el-button type="success" size="small" class="dialog" @click="dialogFormVisible = true">添加新的测试集合</el-button>
+
+        <el-dialog title="集合" :visible.sync="dialogFormVisible">
+          <el-form :model="form">
+            <el-form-item label="集合名称" :label-width="formLabelWidth">
+              <el-input v-model="form.TestSuite" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="集合描述" :label-width="formLabelWidth">
+              <el-input v-model="form.TestSuiteDesc" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="集合索引" :label-width="formLabelWidth">
+              <el-input v-model="form.id" auto-complete="off"></el-input>
+            </el-form-item>
+            
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addnewTestsuite()">确 定</el-button>
+          </div>
+        </el-dialog>
+                    <el-button type="success" size="small" class="save" @click="quit()">退出</el-button>
                 </div>
                 <el-row>
                     <el-col id="order-list" :span="12" class="pos-order">
@@ -259,7 +279,16 @@ export default {
     name: 'Pos',
     data() {
         return { 
-            
+            dialogFormVisible: false,
+            dialogTableVisible: false,
+        
+        form: {
+          TestSuite: '',
+          TestSuiteDesc: '',
+          id: '',
+          TestSuiteData: ''
+        },
+        formLabelWidth: '120px',
             input: '',
             testscene:[],
             index: 0,
@@ -1606,6 +1635,17 @@ export default {
         document.getElementById('order-list').style.height = orderHeight + 'px'
     },
     methods: {
+        addnewTestsuite(){
+            var testSuite = { "TestSuite":this.form.TestSuite, 
+                       "TestSuiteDesc":this.form.TestSuiteDesc, 
+                   "id":this.form.id,"TestSuiteData":[]}
+                    this.testSuite.data.push(testSuite)
+                    this.$nextTick(function () {
+                    this.dialogFormVisible=false
+            })
+
+            
+        },
         showTestSuiteDetail(testSuite) {
             this.testSuiteDetails = testSuite
         },
@@ -1912,5 +1952,9 @@ export default {
 }
 .searchbutton{
     padding: 10px 10px 5px 10px
+}
+.dialog{
+    position: absolute;
+    right: 150px;
 }
 </style>
