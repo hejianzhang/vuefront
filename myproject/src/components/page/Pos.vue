@@ -2,7 +2,7 @@
     <div class="pos">
         <el-row>
             <el-col id="order-list" :span="12" class="pos-order">
-                <el-tabs>
+                <el-tabs @tab-click="handleClick">
     
                     <el-tab-pane label="测试用例集合">
                         <div class="info">
@@ -26,16 +26,14 @@
                             </div>
                         </div>
                         <div class="filter">
-                        <el-input  class="input" v-model="input"  size="small" width="30px"placeholder="请输入筛选接口">
-                        </el-input>
-                        <el-button class="searchbutton"  size="small" type="success" @click="search(input)">搜索
-                        </el-button>
-                        <el-button  class="searchbutton" size="small" type="danger"  @click="update()">更新
-                        </el-button></div>
-                        
-                        
-                         
-                         
+                            <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
+                            </el-input>
+                            <el-button class="searchbutton" size="small" type="success" @click="search(input)">搜索
+                            </el-button>
+                            <el-button class="searchbutton" size="small" type="danger" @click="update()">更新
+                            </el-button>
+                        </div>
+    
                         <el-table :data="mydata1[0].testdata" border>
                             <el-table-column type="index" min-width="15%"></el-table-column>
                             <el-table-column prop="id" label="序号" size="small" min-width="15%"></el-table-column>
@@ -53,48 +51,43 @@
                     <el-tab-pane label="测试场景">
                         <div class="hello">
                             <el-table :data="testscene" border>
-                                <el-table-column type="index" min-width="10%"></el-table-column>
+                                <el-table-column size="small" type="index" width="80"></el-table-column>
                                 <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
-                                <el-table-column prop="TestSuite" label="场景名称" min-width="30%"></el-table-column>
-                                <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" min-width="30%"></el-table-column>
-                                <el-table-column label="操作" min-width="30%">
-                             
-                           
+                                <el-table-column prop="TestSuite" label="场景名称" width="160"></el-table-column>
+                                <el-table-column label="执行进度" width="160">
+                                    <template scope="scope">
+                                        <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+    
+                                    </template>
+    
+                                </el-table-column>
+                                <el-table-column label="操作" width="400">
+    
                                     <template scope="scope">
                                         <el-button type="danger" size="small" @click="deltestdata11(scope.$index,scope.row)">删除</el-button>
-                                        <el-button type="primary" size="small" @click="runtestscene(scope.row)">运行</el-button>
+                                        <el-button type="primary" size="small" @click="runtestscene()">执行</el-button>
+                                        <el-button type="warning" size="small" @click="runtestscene()">执行详情</el-button>
+    
                                     </template>
-                                
+    
                                 </el-table-column>
                             </el-table>
-                           
+    
                         </div>
                         <div class="totalDiv">
                             <el-button type="success" size="small" min-width="30%" @click="runAll(testscene)">全部运行</el-button>
                         </div>
-                        <div class="div-btn">
-                            <el-button type="warning">挂单</el-button>
-                            <el-button type="danger" @click="deleteAllGoods ()">删除</el-button>
-                            <el-button type="success">结账</el-button>
-    
-                        </div>
                     </el-tab-pane>
                     <!-- <el-tab-pane label="测试结果">
-                            <span>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
-                            <el-table :data="tableData" border style="width:100%">
-                                <el-table-column prop="id" label="商品名称"></el-table-column>
-                                <el-table-column prop="count" label="数量" width="70"></el-table-column>
-                                <el-table-column prop="price" label="金额" width="70"></el-table-column>
-                                <el-table-column label="操作" width="100" fixed="right">
-                                    <template scope="scope">
-                                        <el-button type="text" size="small" @click="delSingleGoods(scope.row)">删除</el-button>
-                                        <el-button type="text" size="small" @click="addList(scope.row)">增加</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            {{mydata.brokerID}}
-                        </el-tab-pane>  -->
+                            <el-progress :text-inside="true" :stroke-width="18" :percentage="0"></el-progress>
+                            <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
+                            <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+                            <el-progress :text-inside="true" :stroke-width="18" :percentage="50" status="exception"></el-progress>
+                        </el-tab-pane> -->
                 </el-tabs>
+            </el-col>
+            <el-col id="order-list11111" :span="12" v-if="testProgress===true">
+                <collapse></collapse>
             </el-col>
             <el-col id="order-list" :span="12" v-show="showRight">
                 <div class="often-goods">
@@ -124,7 +117,7 @@
                             <li v-for="(key,value) in oftenGoods.input">
                                 <i>{{value}}:
                                     <input class="o-price" v-model="oftenGoods.input[value]
-                                            "></input>
+                                                    "></input>
                                 </i>
     
                             </li>
@@ -149,25 +142,25 @@
                 <div class="title">
                     <span class="suitesize">添加到场景</span>
                     <el-button type="success" size="small" class="dialog" @click="dialogFormVisible = true">添加新的测试集合</el-button>
-
-        <el-dialog title="集合" :visible.sync="dialogFormVisible">
-          <el-form :model="form">
-            <el-form-item label="集合名称" :label-width="formLabelWidth">
-              <el-input v-model="form.TestSuite" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="集合描述" :label-width="formLabelWidth">
-              <el-input v-model="form.TestSuiteDesc" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="集合索引" :label-width="formLabelWidth">
-              <el-input v-model="form.id" auto-complete="off"></el-input>
-            </el-form-item>
-            
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addnewTestsuite()">确 定</el-button>
-          </div>
-        </el-dialog>
+    
+                    <el-dialog title="集合" :visible.sync="dialogFormVisible">
+                        <el-form :model="form">
+                            <el-form-item label="集合名称" :label-width="formLabelWidth">
+                                <el-input v-model="form.TestSuite" auto-complete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="集合描述" :label-width="formLabelWidth">
+                                <el-input v-model="form.TestSuiteDesc" auto-complete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="集合索引" :label-width="formLabelWidth">
+                                <el-input v-model="form.id" auto-complete="off"></el-input>
+                            </el-form-item>
+    
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogFormVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="addnewTestsuite()">确 定</el-button>
+                        </div>
+                    </el-dialog>
                     <el-button type="success" size="small" class="save" @click="quit()">退出</el-button>
                 </div>
                 <el-row>
@@ -220,6 +213,7 @@
     
                         </el-tabs>
                     </el-col>
+                     
                     <el-col id="order-list" :span="12" v-show="show2Right">
                         <div class="often-goods">
                             <div class="title">主键定位
@@ -248,7 +242,7 @@
                                     <li v-for="(key,value) in often2Goods.input">
                                         <i>{{value}}:
                                             <input class="o-price" v-model="often2Goods.input[value]
-                                            "></input>
+                                                    "></input>
                                         </i>
     
                                     </li>
@@ -264,8 +258,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="goods-type">
-                        </div>
                     </el-col>
                 </el-row>
             </div>
@@ -275,22 +267,24 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
+import collapse from '../common/collapse.vue'
 export default {
     name: 'Pos',
     data() {
-        return { 
+        return {
+            testProgress: false,
             dialogFormVisible: false,
             dialogTableVisible: false,
-        
-        form: {
-          TestSuite: '',
-          TestSuiteDesc: '',
-          id: '',
-          TestSuiteData: ''
-        },
-        formLabelWidth: '120px',
+
+            form: {
+                TestSuite: '',
+                TestSuiteDesc: '',
+                id: '',
+                TestSuiteData: ''
+            },
+            formLabelWidth: '120px',
             input: '',
-            testscene:[],
+            testscene: [],
             index: 0,
             showRight: false,
             show2Right: false,
@@ -1635,16 +1629,29 @@ export default {
         document.getElementById('order-list').style.height = orderHeight + 'px'
     },
     methods: {
-        addnewTestsuite(){
-            var testSuite = { "TestSuite":this.form.TestSuite, 
-                       "TestSuiteDesc":this.form.TestSuiteDesc, 
-                   "id":this.form.id,"TestSuiteData":[]}
-                    this.testSuite.data.push(testSuite)
-                    this.$nextTick(function () {
-                    this.dialogFormVisible=false
+       handleClick(tab, event) {
+       this.testProgress=false
+      },
+        runtestscene() {
+           this.showRight=false
+           this.show2Right=false
+            this.testProgress = true
+            this.$nextTick(function () {
+                console.log("aaaaaaaaaaaaa")
+            })
+        },
+        addnewTestsuite() {
+            var testSuite = {
+                "TestSuite": this.form.TestSuite,
+                "TestSuiteDesc": this.form.TestSuiteDesc,
+                "id": this.form.id, "TestSuiteData": []
+            }
+            this.testSuite.data.push(testSuite)
+            this.$nextTick(function () {
+                this.dialogFormVisible = false
             })
 
-            
+
         },
         showTestSuiteDetail(testSuite) {
             this.testSuiteDetails = testSuite
@@ -1693,6 +1700,13 @@ export default {
         },
         quit() {
             this.fold = false
+            this.show2Right=false
+              this.$nextTick(function () {
+                //  console.log(this.$el.textContent.olddata)
+                // console.log(this.olddata[0].testdata[this.oftenGoods.id].input.exchangeID)
+                //  window.location.reload();
+            })
+
         },
         addList(testCase) {
 
@@ -1701,7 +1715,7 @@ export default {
 
         },
         update() {
-            this.mydata1=JSON.parse(JSON.stringify(this.olddata))
+            this.mydata1 = JSON.parse(JSON.stringify(this.olddata))
             this.$nextTick(function () {
 
             })
@@ -1739,47 +1753,47 @@ export default {
 
 
         },
-        search(input){
-            let test=[]
+        search(input) {
+            let test = []
             this.mydata1[0].testdata.forEach(
-                function(val,index,arr){
-                    if(arr[index].name.indexOf(input)!==-1){
-                        
-                       test.push(arr[index])
+                function (val, index, arr) {
+                    if (arr[index].name.indexOf(input) !== -1) {
+
+                        test.push(arr[index])
                     }
-                    
+
                 }
-                
-                
-       
+
+
+
             )
             console.log(test.length)
-            this.mydata1[0].testdata=test
-             this.$nextTick(function () {
+            this.mydata1[0].testdata = test
+            this.$nextTick(function () {
 
             })
 
         },
-        deltestdata11(index, testcase){
+        deltestdata11(index, testcase) {
             console.log(index)
-            this.testscene.splice(index,1)
+            this.testscene.splice(index, 1)
             this.$nextTick(function () {
 
             })
 
         },
 
-        deltestdata(index, testcase){
+        deltestdata(index, testcase) {
             console.log(index)
-            this.mydata1[0].testdata.splice(index,1)
+            this.mydata1[0].testdata.splice(index, 1)
             this.$nextTick(function () {
 
             })
 
         },
-        addtestscene(testsuite){
-          this.testscene.push(testsuite)
-          this.$nextTick(function () {
+        addtestscene(testsuite) {
+            this.testscene.push(testsuite)
+            this.$nextTick(function () {
 
             })
 
@@ -1818,7 +1832,7 @@ export default {
         }
     },
     components: {
-        
+       collapse
     }
 }
 </script>
@@ -1938,22 +1952,25 @@ export default {
     font-size: 20px;
     font-weight: 700;
 }
-.filter{
+
+.filter {
     width: 100%;
     height: 50px;
     background: rgba(7, 17, 27, 0.8);
     border-bottom: 1px solid #D3dce6;
     background-color: #F9FAFC;
-
 }
+
 .input {
-    width:200px;
+    width: 200px;
     padding: 10px 0 5px 20px;
 }
-.searchbutton{
+
+.searchbutton {
     padding: 10px 10px 5px 10px
 }
-.dialog{
+
+.dialog {
     position: absolute;
     right: 150px;
 }
