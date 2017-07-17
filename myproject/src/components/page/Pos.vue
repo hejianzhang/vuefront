@@ -32,6 +32,26 @@
                             </el-button>
                             <el-button class="searchbutton" size="small" type="danger" @click="update()">更新
                             </el-button>
+                            <el-button class="searchbutton" size="small" type="warning" @click="dialogFormVisible1 = true">定义新接口
+                            </el-button>
+                            <el-dialog title="收货地址" :visible.sync="dialogFormVisible1">
+                            <el-form-item prop="email" label="邮箱" :rules="[ { required: true, message: '请输入邮箱地址', trigger: 'blur' }, { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' } ]" >
+                               <el-input v-model="dynamicValidateForm.email"></el-input>
+                           </el-form-item>
+                           <el-form-item v-for="(domain, index) in dynamicValidateForm.domains" :label="'域名' + index" :key="domain.key" :prop="'domains.' + index + '.value'" :rules="{ required: true, message: '域名不能为空', trigger: 'blur' }">
+                           <el-input v-model="domain.value"></el-input><el-button @click.prevent="removeDomain(domain)">删除</el-button>
+                           </el-form-item>
+                           <el-form-item>
+                           <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
+                           <el-button @click="addDomain">新增域名</el-button>
+                           <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+                           </el-form-item>
+                           </el-form>
+                           <div slot="footer" class="dialog-footer">
+                           <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+                           <el-button type="primary" @click="dialogFormVisible1 = false">确 定</el-button>
+                           </div>
+                           </el-dialog>
                         </div>
     
                         <el-table :data="mydata1[0].testdata" border>
@@ -41,9 +61,9 @@
                             <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
                             <el-table-column label="操作" min-width="30%">
                                 <template scope="scope">
-                                    <el-button type="primary" size="small" @click="deltestdata(scope.$index, scope.row)">删除</el-button>
+                                    <el-button type="danger" size="small" @click="deltestdata(scope.$index, scope.row)">删除</el-button>
                                     <el-button type="primary" size="small" @click="addList(scope.row)">增加</el-button>
-                                    <el-button type="primary" size="small" @click="showTestDetail(scope.row)">展示</el-button>
+                                    <el-button type="success" size="small" @click="showTestDetail(scope.row)">展示</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -272,6 +292,8 @@ export default {
     name: 'Pos',
     data() {
         return {
+            dynamicValidateForm: {domains: [{ value: ''}],email: ''},
+            dialogFormVisible1:false,
             testProgress: false,
             dialogFormVisible: false,
             dialogTableVisible: false,
@@ -1629,8 +1651,34 @@ export default {
         document.getElementById('order-list').style.height = orderHeight + 'px'
     },
     methods: {
+       submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+      removeDomain(item) {
+        var index = this.dynamicValidateForm.domains.indexOf(item)
+        if (index !== -1) {
+          this.dynamicValidateForm.domains.splice(index, 1)
+        }
+      },
+      addDomain() {
+        this.dynamicValidateForm.domains.push({
+          value: '',
+          key: Date.now()
+        });
+      },
        handleClick(tab, event) {
        this.testProgress=false
+       this.showRight=false
       },
         runtestscene() {
            this.showRight=false
