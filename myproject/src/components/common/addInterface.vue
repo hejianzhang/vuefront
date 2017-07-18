@@ -13,9 +13,12 @@
                             <el-form-item prop="input"  label="输入值" >
                             <el-input v-model="interface.input"></el-input>
                             </el-form-item>
+                            <el-form-item prop="expectResult"  label="输出结果" >
+                            <el-input v-model="interface.expectResult"></el-input>
+                            </el-form-item>
                             
                             <el-form-item>
-                            <el-button type="primary" @click="submitForm('interface')">提交</el-button>
+                            <el-button type="primary" @click="submitForm()">提交</el-button>
                             <el-button @click="addDomain">新增域名</el-button>
                             <el-button @click="resetForm('interface')">重置</el-button>
                             </el-form-item>
@@ -25,14 +28,15 @@
 
 <script>
   export default {
+    props:['testdata'],
     data() {
       return {
         interface: {
           id:'',
           name:'',
           desc:'',
-          'input':{},
-          'expectResult':{}
+          'input':'',
+          'expectResult':''
 
         },
         dynamicValidateForm: {
@@ -45,7 +49,13 @@
     },
     methods: {
       submitForm(formName) {
-        console.log(this.$refs[formName])
+       this.interface.input=JSON.parse(this.interface.input)
+       this.interface.expectResult=JSON.parse(this.interface.expectResult)
+       this.testdata.push(this.interface)
+        console.log(this.testdata)
+        this.$nextTick(function () {
+               
+            })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

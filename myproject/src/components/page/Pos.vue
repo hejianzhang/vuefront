@@ -145,7 +145,7 @@
        
         <div>
            <div  class="newinterface" v-show="InterfaceFlag" >
-            <addInterface ></addInterface>
+            <addInterface :testdata="mydata1[0].testdata"></addInterface>
            </div>
             <div class="addtestList-wrapper" v-show="fold">
                 <div class="title">
@@ -1615,14 +1615,14 @@ export default {
         //         console.log(error)
         //         alert('网络错误')
         //     })
-        axios.get('http://localhost:8081/myapp/arequestAjax1', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-            this.mydata = response.data
-            console.log(this.mydata)
-        })
-            .catch(error => {
-                console.log(error)
-                alert('网络错误')
-            })
+     //   axios.get('http://localhost:8081/myapp/arequestAjax1', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+     //       this.mydata = response.data
+     //       console.log(this.mydata)
+      //  })
+       //     .catch(error => {
+       //         console.log(error)
+      //          alert('网络错误')
+      //      })
         axios.get('http://jspang.com/DemoApi/typeGoods.php').then(reponse => {
             this.type0Goods = reponse.data[0]
             this.type1Goods = reponse.data[1]
