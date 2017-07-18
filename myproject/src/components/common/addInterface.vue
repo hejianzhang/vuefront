@@ -1,16 +1,23 @@
 <template>
 
-                        <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
-                            <el-form-item prop="email"  label="邮箱" :rules="[{ required: true, message: '请输入邮箱地址', trigger: 'blur' },{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' } ]" >
-                            <el-input v-model="dynamicValidateForm.email"></el-input>
+                        <el-form :model="interface" ref="interface" label-width="100px" class="demo-dynamic">
+                            <el-form-item prop="id"  label="id"   >
+                            <el-input v-model="interface.id"></el-input>
                             </el-form-item>
-                            <el-form-item v-for="(domain, index) in dynamicValidateForm.domains"  :label="'域名' + index" :key="domain.key" :prop="'domains.' + index + '.value'" :rules="{required: true, message: '域名不能为空', trigger: 'blur' }">
-                            <el-input v-model="domain.value"></el-input><el-button @click.prevent="removeDomain(domain)">删除</el-button>
+                            <el-form-item prop="name"  label="名字"  >
+                            <el-input v-model="interface.name"></el-input>
                             </el-form-item>
+                            <el-form-item prop="desc"  label="描述"  >
+                            <el-input v-model="interface.desc"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="input"  label="输入值" >
+                            <el-input v-model="interface.input"></el-input>
+                            </el-form-item>
+                            
                             <el-form-item>
-                            <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
+                            <el-button type="primary" @click="submitForm('interface')">提交</el-button>
                             <el-button @click="addDomain">新增域名</el-button>
-                            <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+                            <el-button @click="resetForm('interface')">重置</el-button>
                             </el-form-item>
                         </el-form>
                         
@@ -20,6 +27,14 @@
   export default {
     data() {
       return {
+        interface: {
+          id:'',
+          name:'',
+          desc:'',
+          'input':{},
+          'expectResult':{}
+
+        },
         dynamicValidateForm: {
           domains: [{
             value: ''
@@ -30,14 +45,7 @@
     },
     methods: {
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+        console.log(this.$refs[formName])
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
