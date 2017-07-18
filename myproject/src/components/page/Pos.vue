@@ -5,26 +5,28 @@
                 <el-tabs @tab-click="handleClick">
     
                     <el-tab-pane label="测试用例集合">
-                        <div class="info">
-                            <div class="title">登陆信息
-                                <button @click="fresh">刷新</button>
-                            </div>
-                            <div class='userinfo'>brokerId:
+                        <el-card height="200px" class="box-card">
+                           <div slot="header" class="clearfix">
+                                <span style="line-height: 18px;">登陆信息</span>
+                                <el-button style="float: right;" type="warning" @click="fresh">刷新</el-button>
+                           </div>
+                           <div class='text item'>brokerId:
                                 <span class="userlogininfo">{{mydata1[0].brokerID}}</span>
                             </div>
-                            <div class='userinfo'>密码:
+                             <div class='text item'>密码:
                                 <span class="userlogininfo">{{mydata1[0].password}}</span>
                             </div>
-                            <div class='userinfo'>spi:
+                             <div class='text item'>spi:
                                 <span class="userlogininfo">{{mydata1[0].spi}}</span>
                             </div>
-                            <div class='userinfo'>系统:
+                             <div class='text item'>系统:
                                 <span class="userlogininfo">{{mydata1[0].system}}</span>
                             </div>
-                            <div class='userinfo'>用户:
+                            <div class='text item'>用户:
                                 <span class="userlogininfo">{{mydata1[0].userID}}</span>
                             </div>
-                        </div>
+                            </el-card>
+                        
                         <div class="filter">
                             <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
                             </el-input>
@@ -32,27 +34,10 @@
                             </el-button>
                             <el-button class="searchbutton" size="small" type="danger" @click="update()">更新
                             </el-button>
-                            <el-button class="searchbutton" size="small" type="warning" @click="dialogFormVisible1 = true">定义新接口
+                            <el-button class="searchbutton" size="small" type="warning" @click="addInterfaceFlag()">定义新接口
                             </el-button>
-                            <el-dialog title="收货地址" :visible.sync="dialogFormVisible1">
-                            <el-form-item prop="email" label="邮箱" :rules="[ { required: true, message: '请输入邮箱地址', trigger: 'blur' }, { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' } ]" >
-                               <el-input v-model="dynamicValidateForm.email"></el-input>
-                           </el-form-item>
-                           <el-form-item v-for="(domain, index) in dynamicValidateForm.domains" :label="'域名' + index" :key="domain.key" :prop="'domains.' + index + '.value'" :rules="{ required: true, message: '域名不能为空', trigger: 'blur' }">
-                           <el-input v-model="domain.value"></el-input><el-button @click.prevent="removeDomain(domain)">删除</el-button>
-                           </el-form-item>
-                           <el-form-item>
-                           <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
-                           <el-button @click="addDomain">新增域名</el-button>
-                           <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
-                           </el-form-item>
-                           </el-form>
-                           <div slot="footer" class="dialog-footer">
-                           <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-                           <el-button type="primary" @click="dialogFormVisible1 = false">确 定</el-button>
-                           </div>
-                           </el-dialog>
                         </div>
+                        
     
                         <el-table :data="mydata1[0].testdata" border>
                             <el-table-column type="index" min-width="15%"></el-table-column>
@@ -68,6 +53,7 @@
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
+                    
                     <el-tab-pane label="测试场景">
                         <div class="hello">
                             <el-table :data="testscene" border>
@@ -112,8 +98,8 @@
             <el-col id="order-list" :span="12" v-show="showRight">
                 <div class="often-goods">
                     <div class="title">主键定位
-                        <button class="savebackend">同步后台</button>
-                        <button class="save" @click="save">保存当前</button>
+                        <el-button type="success" size="small" class="savebackend">同步后台</el-button>
+                        <el-button type="warning" size="small" class="save" @click="save">保存当前</el-button>
                     </div>
                     <div class="often-goods-list">
                         <ul>
@@ -153,11 +139,14 @@
                         </ul>
                     </div>
                 </div>
-                <div class="goods-type">
-                </div>
+                
             </el-col>
         </el-row>
+       
         <div>
+           <div  class="newinterface" v-show="InterfaceFlag" >
+            <addInterface ></addInterface>
+           </div>
             <div class="addtestList-wrapper" v-show="fold">
                 <div class="title">
                     <span class="suitesize">添加到场景</span>
@@ -181,24 +170,23 @@
                             <el-button type="primary" @click="addnewTestsuite()">确 定</el-button>
                         </div>
                     </el-dialog>
-                    <el-button type="success" size="small" class="save" @click="quit()">退出</el-button>
+                    <el-button type="warning" size="small" class="save" @click="quit()">退出</el-button>
                 </div>
                 <el-row>
                     <el-col id="order-list" :span="12" class="pos-order">
                         <el-tabs>
                             <!-- <!--  -->
-    
-                            <div class="info">
-                                <div class='userinfo'>用例集:
-                                    <span class="userlogininfo">{{testSuite.name}}</span>
-                                </div>
-                                <div class='userinfo'>回调函数:
-                                    <span class="userlogininfo">{{testSuite.spi}}</span>
-                                </div>
-                                <div class='userinfo'>系统:
-                                    <span class="userlogininfo">{{testSuite.system}}</span>
-                                </div>
+                            <el-card height="100px" class="box-card1s">
+                           <div class='text item'>用例集:
+                                <span class="userlogininfo">{{testSuite.name}}</span>
                             </div>
+                             <div class='text item'>回调函数:
+                                <span class="userlogininfo">{{mydata1[0].spi}}</span>
+                            </div>
+                             <div class='text item'>系统:
+                                <span class="userlogininfo">{{mydata1[0].system}}</span>
+                            </div>
+                            </el-card>
                             <div class="title">
                                 <span class="suitesize">场景集合</span>
                             </div>
@@ -209,9 +197,9 @@
                                 <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" min-width="30%"></el-table-column>
                                 <el-table-column label="操作" min-width="30%">
                                     <template scope="scope">
-                                        <el-button type="primary" size="small" @click="addtestscene(scope.row)">组合</el-button>
+                                        <el-button type="danger" size="small" @click="addtestscene(scope.row)">组合</el-button>
                                         <el-button type="primary" size="small" @click="addSuiteList(scope.row)">增加</el-button>
-                                        <el-button type="primary" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
+                                        <el-button type="success" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -225,8 +213,8 @@
                                 <el-table-column prop="desc" size="small" label="场景描述" min-width="30%"></el-table-column>
                                 <el-table-column label="操作" min-width="30%">
                                     <template scope="scope">
-                                        <el-button type="primary" size="small" @click="deltestcase(scope.$index, scope.row)">删除</el-button>
-                                        <el-button type="primary" size="small" @click="showTestDetail1(scope.row)">展示</el-button>
+                                        <el-button type="success" size="small" @click="deltestcase(scope.$index, scope.row)">删除</el-button>
+                                        <el-button type="warning" size="small" @click="showTestDetail1(scope.row)">展示</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -237,8 +225,7 @@
                     <el-col id="order-list" :span="12" v-show="show2Right">
                         <div class="often-goods">
                             <div class="title">主键定位
-                                <button class="savebackend">同步后台</button>
-                                <button class="save" @click="save">保存当前</button>
+                               
                             </div>
                             <div class="often-goods-list">
                                 <ul>
@@ -288,12 +275,13 @@
 import axios from 'axios'
 import Vue from 'vue'
 import collapse from '../common/collapse.vue'
+import addInterface from '../common/addInterface.vue'
 export default {
     name: 'Pos',
     data() {
         return {
+            InterfaceFlag: false,
             dynamicValidateForm: {domains: [{ value: ''}],email: ''},
-            dialogFormVisible1:false,
             testProgress: false,
             dialogFormVisible: false,
             dialogTableVisible: false,
@@ -1651,6 +1639,11 @@ export default {
         document.getElementById('order-list').style.height = orderHeight + 'px'
     },
     methods: {
+       addInterfaceFlag(){
+           this.InterfaceFlag=!this.InterfaceFlag
+           this.$nextTick(function () {
+           })
+       },
        submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -1880,14 +1873,47 @@ export default {
         }
     },
     components: {
-       collapse
+       collapse,
+       addInterface
     }
 }
 </script>
 <style>
+.text {
+    font-size: 14px;
+  }
+  .el-card__header {
+    padding: 5px 10px;
+    border-bottom: 1px solid #d1dbe5;
+    box-sizing: border-box;
+}
+.el-card__body {
+    padding: 5px;
+}
+.item {
+    padding: 5px 0;
+  }
+
+.clearfix:before,
+.clearfix:after {
+      display: table;
+      content: "";
+  }
+.clearfix:after {
+      clear: both
+  }
+
+.box-card {
+    height: 200px;
+    width: 700px;
+  }
+.box-card1 {
+    height: 100px;
+    width: 700px;
+  }
 .pos-order {
     background-color: #F9FAFC;
-    border-right: 1px solid #C0CCDA;
+    
 }
 
 .div-btn {
@@ -1915,42 +1941,13 @@ export default {
     color: #5887FF
 }
 
-.goods-type {
-    clear: both
-}
 
-.cooklist li {
-    list-style: none;
-    width: 23%;
-    border: 1px solid #E5E9F2;
-    height: auto;
-    overflow: hidden;
-    background-color: #fff;
-    padding: 2px;
-    float: left;
-    margin: 2px;
-}
 
-.cookList li span {
-    display: block;
-    float: left;
-}
 
-.foodImg {
-    width: 40%;
-}
 
-.foodName {
-    font-size: 18px;
-    padding-left: 10px;
-    color: brown;
-}
 
-.foodPrice {
-    font-size: 16px;
-    padding-left: 10px;
-    padding-top: 10px;
-}
+
+
 
 .totalDiv {
     text-align: center;
@@ -1981,6 +1978,13 @@ export default {
 .save {
     position: absolute;
     right: 50px;
+}
+
+.el-table::after{
+     content:"."; display:block; height:0; visibility:hidden; clear:both; 
+}
+.el-tabs__active-bar {
+    visibility:hidden; clear:both; 
 }
 
 .addtestList-wrapper {
