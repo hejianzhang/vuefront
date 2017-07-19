@@ -36,15 +36,18 @@
                             </el-button>
                             <el-button class="searchbutton" size="small" type="warning" @click="addInterfaceFlag()">定义新接口
                             </el-button>
+                             <el-button class="searchbutton" size="small" type="primary" @click="addselecttestcase()">批量添加选择用例
+                            </el-button>
                         </div>
                         
     
-                        <el-table :data="mydata1[0].testdata" border>
-                            <el-table-column type="index" min-width="15%"></el-table-column>
-                            <el-table-column prop="id" label="序号" size="small" min-width="15%"></el-table-column>
-                            <el-table-column prop="name" label="接口名称" min-width="30%"></el-table-column>
+                        <el-table :data="mydata1[0].testdata" border  @selection-change="handleSelectionChange1">
+                            <el-table-column type="selection" width="50px"></el-table-column>
+                            <el-table-column type="index" width="80px"></el-table-column>
+                            <el-table-column prop="id" label="序号" size="small" width="80px"></el-table-column>
+                            <el-table-column prop="name" label="接口名称" width="240px"></el-table-column>
                             <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
-                            <el-table-column label="操作" min-width="30%">
+                            <el-table-column label="操作" width="320px">
                                 <template scope="scope">
                                     <el-button type="danger" size="small" @click="deltestdata(scope.$index, scope.row)">删除</el-button>
                                     <el-button type="primary" size="small" @click="addList(scope.row)">增加</el-button>
@@ -57,7 +60,7 @@
                     <el-tab-pane label="测试场景">
                         <div class="hello">
                             <el-table :data="testscene" border>
-                                <el-table-column size="small" type="index" width="80"></el-table-column>
+                                <el-table-column  size="small" type="index" width="80"></el-table-column>
                                 <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
                                 <el-table-column prop="TestSuite" label="场景名称" width="160"></el-table-column>
                                 <el-table-column label="执行进度" width="160">
@@ -188,14 +191,19 @@
                             </div>
                             </el-card>
                             <div class="title">
-                                <span class="suitesize">场景集合</span>
+                                <span class="suitesize">场景集合
+                                     <el-button type="warning" size="small" @click="selectadd()">批量添加选择测试场景</el-button>
+                                </span>
                             </div>
-                            <el-table :data="testSuite.data" border>
-                                <el-table-column type="index" min-width="10%"></el-table-column>
+                            <el-table :data="testSuite.data"  border  @selection-change="handleSelectionChange" >
+                                <el-table-column type="selection" width="40px">
+                                    
+                                </el-table-column>
+                                <el-table-column type="index" width="40px"></el-table-column>
                                 <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
-                                <el-table-column prop="TestSuite" label="场景名称" min-width="30%"></el-table-column>
-                                <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" min-width="30%"></el-table-column>
-                                <el-table-column label="操作" min-width="30%">
+                                <el-table-column prop="TestSuite" label="场景名称" width="120px"></el-table-column>
+                                <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" width="240px"></el-table-column>
+                                <el-table-column label="操作" width="330px">
                                     <template scope="scope">
                                         <el-button type="danger" size="small" @click="addtestscene(scope.row)">组合</el-button>
                                         <el-button type="primary" size="small" @click="addSuiteList(scope.row)">增加</el-button>
@@ -207,11 +215,11 @@
                                 <span class="suitesize">场景用例展示集合</span>
                             </div>
                             <el-table :data="testSuiteDetails.TestSuiteData" border>
-                                <el-table-column type="index" min-width="10%"></el-table-column>
-                                <el-table-column prop="id" label="序号" sortable size="small" min-width="10%"></el-table-column>
-                                <el-table-column prop="name" label="接口名称" sortable min-width="30%"></el-table-column>
-                                <el-table-column prop="desc" size="small" label="场景描述" min-width="30%"></el-table-column>
-                                <el-table-column label="操作" min-width="30%">
+                                <el-table-column type="index" width="60px"></el-table-column>
+                                <el-table-column prop="id" label="序号" sortable size="small" width="60px"></el-table-column>
+                                <el-table-column prop="name" label="接口名称" sortable width="200px"></el-table-column>
+                                <el-table-column prop="desc" size="small" label="场景描述" width="240px"></el-table-column>
+                                <el-table-column label="操作" width="330px">
                                     <template scope="scope">
                                         <el-button type="success" size="small" @click="deltestcase(scope.$index, scope.row)">删除</el-button>
                                         <el-button type="warning" size="small" @click="showTestDetail1(scope.row)">展示</el-button>
@@ -280,6 +288,8 @@ export default {
     name: 'Pos',
     data() {
         return {
+            selectaddtest: [],
+            selectaddTestSuite:[],
             InterfaceFlag: false,
             dynamicValidateForm: {domains: [{ value: ''}],email: ''},
             testProgress: false,
@@ -1639,6 +1649,22 @@ export default {
         document.getElementById('order-list').style.height = orderHeight + 'px'
     },
     methods: {
+       handleSelectionChange1(val){
+           this.selectaddtest=val
+       },
+       handleSelectionChange(val) {
+       this.selectaddTestSuite = val
+      
+            },
+       selectadd(){
+          for(var i=0;i<this.selectaddTestSuite.length;i++){
+               this.testscene.push(this.selectaddTestSuite[i])
+          }
+         
+            this.$nextTick(function () {
+
+            })
+       },
        addInterfaceFlag(){
            this.InterfaceFlag=!this.InterfaceFlag
            this.$nextTick(function () {
@@ -1672,6 +1698,7 @@ export default {
        handleClick(tab, event) {
        this.testProgress=false
        this.showRight=false
+       this.InterfaceFlag=false
       },
         runtestscene() {
            this.showRight=false
@@ -1715,8 +1742,16 @@ export default {
         },
 
         addSuiteList(testSuiteFocus) {
-            this.testSuiteClick = testSuiteFocus
-            this.testSuiteClick.TestSuiteData.push(this.testcasedata)
+           
+          
+           this.testSuiteClick = testSuiteFocus
+           if(this.testcasedata.length>1){
+           for(let  i=0;i<this.testcasedata.length;i++){
+               this.testSuiteClick.TestSuiteData.push(this.testcasedata[i])
+            }
+           }else{
+              this.testSuiteClick.TestSuiteData.push(this.testcasedata) 
+           }
 
             this.$nextTick(function () {
                 //  console.log(this.$el.textContent.olddata)
@@ -1749,8 +1784,14 @@ export default {
             })
 
         },
+        addselecttestcase(){
+            
+            this.testcasedata = this.selectaddtest
+            this.fold = true
+            
+        },
         addList(testCase) {
-
+             
             this.testcasedata = testCase
             this.fold = true
 
@@ -1989,7 +2030,7 @@ export default {
 
 .addtestList-wrapper {
     position: fixed;
-    z-index: 100px;
+    z-index: 9999;
     top: 0;
     left: 0;
     width: 100%;

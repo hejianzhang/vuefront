@@ -1,48 +1,134 @@
-<<template>
-<el-collapse v-model="activeName2" accordion>
-<el-collapse-item title="一致性 Consistency" name="5">
-<el-collapse v-model="activeName" accordion>
-  <el-collapse-item title="一致性 Consistency6" name="1">
-    <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-    <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+<template>
+<div class="testRunResults">
+<h1 class="title1">测试结果</h1>
+<el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口"> </el-input>
+<el-button class="searchbutton" size="small" type="success" @click="searchResults(input)">搜索</el-button>
+<el-button class="searchbutton" size="small" type="primary" @click="refresh">刷新</el-button>
+<el-collapse v-for="(key,value) in testResults" :key="value" accordion>
+<el-collapse-item :title="key[Object.keys(key)[0]]"  name="1">
+ <el-collapse v-for="(key1,value1) in key[Object.keys(key)[1]]" :key="value1" accordion>
+  <el-collapse-item :title="key1[Object.keys(key1)[0]]" name="1">
+    <div  v-for="(key2,value2) in key1[Object.keys(key1)[1]]" :key="value2">
+
+        <el-tag  color="green" v-if="key2=== 'sucess'" type="success">{{value2}}:</el-tag>
+        <el-tag  color="red"v-else-if="key2=== 'failed'" type="danger">{{value2}}:</el-tag>
+        <el-tag  v-else type="primary">{{value2}}:</el-tag>
+        {{key2}}
+        </div>
   </el-collapse-item>
-  <el-collapse-item title="反馈 Feedback" name="2">
-    <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-    <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
-  </el-collapse-item>
-  <el-collapse-item title="效率 Efficiency" name="3">
-    <div>简化流程：设计简洁直观的操作流程；</div>
-    <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-    <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
-  </el-collapse-item>
-  <el-collapse-item title="可控 Controllability" name="4">
-    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-  </el-collapse-item>
-</el-collapse>
+</el-collapse> 
 </el-collapse-item>
- <el-collapse-item title="可控 Controllability1" name="6">
-    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-  </el-collapse-item>
-   <el-collapse-item title="可控 Controllabilit2" name="7">
-    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-  </el-collapse-item>
-   <el-collapse-item title="可控 Controllability3" name="8">
-    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-  </el-collapse-item>
 </el-collapse>
-  
+  </div>
 </template>
-<<script>
+<script>
 export default {
    data() {
       return {
-        activeName: '1',
-        activeName2:'2'
+        input: '',
+        oldata:[],
+        testResults: {
+            1:{
+            "name":"TestSuite场景1",
+            "data":{
+                testcase1:{
+                    name:"测试用例1",
+                "testdata" :{ 
+                    result:"sucess",
+                    message: 0
+                }
+                },
+                testcase2:{
+                    name:"测试用例2",
+                "testdata":{  
+                    result: "failed",
+                    message: "whyyyyyyyyy"
+                }
+                },
+                testcase3:{
+                    name:"测试用例3",
+                "testdata":{    
+                    result: "no running",
+                    message: "null"
+                }
+                },
+                testcase4:{
+                    name:"测试用例1",
+                "testdata":{  
+                    result: "no running",
+                    message: "null"
+                }
+                }
+            }
+            },
+           2:{
+            "name":"TestSuite场景2",
+            "data":{
+                testcase1:{
+                    name:"测试用例1",
+                "testdata" :{ 
+                    result:"sucess",
+                    message: 0
+                }
+                },
+                testcase2:{
+                    name:"测试用例2",
+                "testdata":{  
+                    result: "failed",
+                    message: "whyyyyyyyyy"
+                }
+                },
+                testcase3:{
+                    name:"测试用例3",
+                "testdata":{    
+                    result: "no running",
+                    message: "null"
+                }
+                },
+                testcase4:{
+                    name:"测试用例1",
+                "testdata":{  
+                    result: "no running",
+                    message: "null"
+                }
+                }
+            }
+            }
+        }
       };
+    },
+    methods:{
+        searchResults(input){
+            // console.log("aaaaaaaaaaaaaa")
+            let test = []
+            for( var key2 in this.testResults){
+                let name=this.testResults[key2]
+                if(name[Object.keys(name)[0]].indexOf(input) !== -1){
+                    test.push(this.testResults[key2])
+                 }
+                
+            }
+           
+     
+           
+
+
+            console.log(test.length)
+            this.oldata=JSON.parse(JSON.stringify(this.testResults))
+            this.testResults = test
+            this.$nextTick(function () {
+             
+            })
+        },
+        refresh(){
+              this.testResults =this.oldata
+        }
+
     }
 }
 </script>
+<style>
+.title1{
+    align-content: center
+}
+</style>

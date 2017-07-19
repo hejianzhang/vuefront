@@ -52,10 +52,10 @@
        this.interface.input=JSON.parse(this.interface.input)
        this.interface.expectResult=JSON.parse(this.interface.expectResult)
        this.testdata.push(this.interface)
-        console.log(this.testdata)
-        this.$nextTick(function () {
+       this.$nextTick(function () {
                
             })
+      alert("id:  "+this.interface.id+"  name: "+this.interface.name+"   添加成功")
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
