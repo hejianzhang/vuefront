@@ -1625,10 +1625,13 @@ export default {
         //         console.log(error)
         //         alert('网络错误')
         //     })
-     //   axios.get('http://localhost:8081/myapp/arequestAjax1', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-     //       this.mydata = response.data
-     //       console.log(this.mydata)
-      //  })
+
+       axios.get('http://localhost:8081/myapp/mvc/hello.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+           this.mydata = response.data
+           console.log(this.mydata)
+       }),
+
+
        //     .catch(error => {
        //         console.log(error)
       //          alert('网络错误')
@@ -1798,6 +1801,8 @@ export default {
         },
         update() {
             this.mydata1 = JSON.parse(JSON.stringify(this.olddata))
+            console.log(this.mydata)
+            console.log(this.mydata1[0])
             this.$nextTick(function () {
 
             })

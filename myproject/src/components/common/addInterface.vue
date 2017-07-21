@@ -27,6 +27,7 @@
 </template>
 
 <script>
+   import axios from 'axios'
   export default {
     props:['testdata'],
     data() {
@@ -39,6 +40,15 @@
           'expectResult':''
 
         },
+        interface1: {
+          id:'',
+          casename:'',
+          casedesc:'',
+          caseinput:'',
+          caseexpectResult:''
+
+        },
+       
         dynamicValidateForm: {
           domains: [{
             value: ''
@@ -49,9 +59,27 @@
     },
     methods: {
       submitForm(formName) {
-       this.interface.input=JSON.parse(this.interface.input)
-       this.interface.expectResult=JSON.parse(this.interface.expectResult)
+      //  this.interface.input=JSON.parse(this.interface.input)
+      //  this.interface.expectResult=JSON.parse(this.interface.expectResult)
        this.testdata.push(this.interface)
+       this.interface1.id=this.interface.id
+       this.interface1.casename=this.interface.name
+       this.interface1.casedesc=this.interface.desc
+       this.interface1.caseinput=this.interface.input
+       this.interface1.caseexpectResult=this.interface.expectResult
+
+       axios.post('http://localhost:8081/myapp/mvc/add.do', this.interface1, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                    console.log(response);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
        this.$nextTick(function () {
                
             })
