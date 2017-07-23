@@ -11,19 +11,19 @@
                                 <el-button style="float: right;" type="warning" @click="fresh">刷新</el-button>
                            </div>
                            <div class='text item'>brokerId:
-                                <span class="userlogininfo">{{mydata1[0].brokerID}}</span>
+                                <span class="userlogininfo">{{mydata1.brokerID}}</span>
                             </div>
                              <div class='text item'>密码:
-                                <span class="userlogininfo">{{mydata1[0].password}}</span>
+                                <span class="userlogininfo">{{mydata1.password}}</span>
                             </div>
                              <div class='text item'>spi:
-                                <span class="userlogininfo">{{mydata1[0].spi}}</span>
+                                <span class="userlogininfo">{{mydata1.spi}}</span>
                             </div>
                              <div class='text item'>系统:
-                                <span class="userlogininfo">{{mydata1[0].system}}</span>
+                                <span class="userlogininfo">{{mydata1.system}}</span>
                             </div>
                             <div class='text item'>用户:
-                                <span class="userlogininfo">{{mydata1[0].userID}}</span>
+                                <span class="userlogininfo">{{mydata1.userID}}</span>
                             </div>
                             </el-card>
                         
@@ -32,7 +32,7 @@
                             </el-input>
                             <el-button class="searchbutton" size="small" type="success" @click="search(input)">搜索
                             </el-button>
-                            <el-button class="searchbutton" size="small" type="danger" @click="update()">更新
+                            <el-button class="searchbutton" size="small" type="danger" @click="updatedate()">更新
                             </el-button>
                             <el-button class="searchbutton" size="small" type="warning" @click="addInterfaceFlag()">定义新接口
                             </el-button>
@@ -41,7 +41,7 @@
                         </div>
                         
     
-                        <el-table :data="mydata1[0].testdata" border  @selection-change="handleSelectionChange1">
+                        <el-table :data="mydata1.testdata" border  @selection-change="handleSelectionChange1">
                             <el-table-column type="selection" width="50px"></el-table-column>
                             <el-table-column type="index" width="80px"></el-table-column>
                             <el-table-column prop="id" label="序号" size="small" width="80px"></el-table-column>
@@ -101,7 +101,7 @@
             <el-col id="order-list" :span="12" v-show="showRight">
                 <div class="often-goods">
                     <div class="title">主键定位
-                        <el-button type="success" size="small" class="savebackend">同步后台</el-button>
+                        
                         <el-button type="warning" size="small" class="save" @click="save">保存当前</el-button>
                     </div>
                     <div class="often-goods-list">
@@ -148,7 +148,7 @@
        
         <div>
            <div  class="newinterface" v-show="InterfaceFlag" >
-            <addInterface :testdata="mydata1[0].testdata"></addInterface>
+            <addInterface :testdata="mydata1.testdata"></addInterface>
            </div>
             <div class="addtestList-wrapper" v-show="fold">
                 <div class="title">
@@ -163,8 +163,8 @@
                             <el-form-item label="集合描述" :label-width="formLabelWidth">
                                 <el-input v-model="form.TestSuiteDesc" auto-complete="off"></el-input>
                             </el-form-item>
-                            <el-form-item label="集合索引" :label-width="formLabelWidth">
-                                <el-input v-model="form.id" auto-complete="off"></el-input>
+                            <el-form-item label="测试用例" :label-width="formLabelWidth">
+                                <el-input v-model="form.TestSuiteData" auto-complete="off"></el-input>
                             </el-form-item>
     
                         </el-form>
@@ -184,10 +184,10 @@
                                 <span class="userlogininfo">{{testSuite.name}}</span>
                             </div>
                              <div class='text item'>回调函数:
-                                <span class="userlogininfo">{{mydata1[0].spi}}</span>
+                                <span class="userlogininfo">{{mydata1.spi}}</span>
                             </div>
                              <div class='text item'>系统:
-                                <span class="userlogininfo">{{mydata1[0].system}}</span>
+                                <span class="userlogininfo">{{mydata1.system}}</span>
                             </div>
                             </el-card>
                             <div class="title">
@@ -206,7 +206,8 @@
                                 <el-table-column label="操作" width="330px">
                                     <template scope="scope">
                                         <el-button type="danger" size="small" @click="addtestscene(scope.row)">组合</el-button>
-                                        <el-button type="primary" size="small" @click="addSuiteList(scope.row)">增加</el-button>
+                                        <el-button type="primary" size="small" @click="deletescenedata(scope.$index, scope.row)">删除</el-button>
+                                         <el-button type="warning" size="small" @click="addSuiteList(scope.row)">增加</el-button>
                                         <el-button type="success" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
                                     </template>
                                 </el-table-column>
@@ -214,7 +215,7 @@
                             <div class="title">
                                 <span class="suitesize">场景用例展示集合</span>
                             </div>
-                            <el-table :data="testSuiteDetails.TestSuiteData" border>
+                            <el-table :data="testSuiteDetails" border>
                                 <el-table-column type="index" width="60px"></el-table-column>
                                 <el-table-column prop="id" label="序号" sortable size="small" width="60px"></el-table-column>
                                 <el-table-column prop="name" label="接口名称" sortable width="200px"></el-table-column>
@@ -311,1222 +312,18 @@ export default {
             testSuiteClick: [],
             testSuiteDetails: [],
             testSuite:
-            {
-                "name": "场景用例集合",
-                "spi": "tradespi",
-                "system": "NTSStock",
-                "index": "1",
-                "data": [
-                    {
-                        "TestSuite": "TestSuite场景1",
-                        "id": 1,
-                        "TestSuiteDesc": "TestSuite场景1的描述",
-                        "TestSuiteData": [
-                            {
-                                "id": 1,
-                                "name": "qryInstrumentXml",
-                                "desc": "场景1",
-                                "input": {
-                                    "exchangeID": "SSE",
-                                    "instrumentID": "11001595"
-                                },
-                                "expectResult": {
-                                    "volumeMultiple": 0,
-                                    "trading": false,
-                                    "productClass": "",
-                                    "returnqryInstrument": -1,
-                                    "execPrice": 0,
-                                    "unitMargin": 0,
-                                    "priceTick": 0
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "name": "qryInstrumentXml",
-                                "desc": "场景2",
-                                "input": {
-                                    "exchangeID": "SSE",
-                                    "instrumentID": "11001596"
-                                },
-                                "expectResult": {
-                                    "volumeMultiple": 0,
-                                    "trading": false,
-                                    "productClass": "",
-                                    "returnqryInstrument": -1,
-                                    "execPrice": 0,
-                                    "unitMargin": 0,
-                                    "priceTick": 0
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "name": "qryTradingAccountXml",
-                                "desc": "场景3",
-                                "input": {
-                                    "brokerID": "2016",
-                                    "investorID": "1300",
-                                    "comboID": "000",
-                                    "assetNo": "2066"
-                                },
-                                "expectResult": {
-                                    "frozenMargin": 0,
-                                    "cashIn": 0,
-                                    "frozenCommission": 0,
-                                    "available": 0,
-                                    "investorID": "",
-                                    "preCredit": 0,
-                                    "preDeposit": 0,
-                                    "preBalance": 0,
-                                    "currMargin": 0,
-                                    "preMargin": 0,
-                                    "frozenCash": 0,
-                                    "settleMargin": 0,
-                                    "closeProfit": 0,
-                                    "positionProfit": 0,
-                                    "preMortgage": 0,
-                                    "balance": 0,
-                                    "withdrawQuota": 0,
-                                    "reserve": 0,
-                                    "deposit": 0,
-                                    "commission": 0,
-                                    "credit": 0,
-                                    "return": 0,
-                                    "withdraw": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "TestSuite": "TestSuite场景2",
-                        "id": 2,
-                        "TestSuiteDesc": "TestSuite场景2的描述",
-                        "TestSuiteData": [
-                            {
-                                "id": 1,
-                                "name": "qryInstrumentXml",
-                                "desc": "场景1",
-                                "input": {
-                                    "exchangeID": "SSE",
-                                    "instrumentID": "11001595"
-                                },
-                                "expectResult": {
-                                    "volumeMultiple": 0,
-                                    "trading": false,
-                                    "productClass": "",
-                                    "returnqryInstrument": -1,
-                                    "execPrice": 0,
-                                    "unitMargin": 0,
-                                    "priceTick": 0
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "name": "qryInstrumentXml",
-                                "desc": "场景2",
-                                "input": {
-                                    "exchangeID": "SSE",
-                                    "instrumentID": "11001596"
-                                },
-                                "expectResult": {
-                                    "volumeMultiple": 0,
-                                    "trading": false,
-                                    "productClass": "",
-                                    "returnqryInstrument": -1,
-                                    "execPrice": 0,
-                                    "unitMargin": 0,
-                                    "priceTick": 0
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "name": "qryTradingAccountXml",
-                                "desc": "场景3",
-                                "input": {
-                                    "brokerID": "2016",
-                                    "investorID": "1300",
-                                    "comboID": "000",
-                                    "assetNo": "2066"
-                                },
-                                "expectResult": {
-                                    "frozenMargin": 0,
-                                    "cashIn": 0,
-                                    "frozenCommission": 0,
-                                    "available": 0,
-                                    "investorID": "",
-                                    "preCredit": 0,
-                                    "preDeposit": 0,
-                                    "preBalance": 0,
-                                    "currMargin": 0,
-                                    "preMargin": 0,
-                                    "frozenCash": 0,
-                                    "settleMargin": 0,
-                                    "closeProfit": 0,
-                                    "positionProfit": 0,
-                                    "preMortgage": 0,
-                                    "balance": 0,
-                                    "withdrawQuota": 0,
-                                    "reserve": 0,
-                                    "deposit": 0,
-                                    "commission": 0,
-                                    "credit": 0,
-                                    "return": 0,
-                                    "withdraw": 0
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "name": "qryTradingAccountXml",
-                                "desc": "场景4",
-                                "input": {
-                                    "investorID": "1300",
-                                    "comboID": "333",
-                                    "assetNo": "2066"
-                                },
-                                "expectResult": {
-                                    "frozenMargin": 0,
-                                    "cashIn": 0,
-                                    "frozenCommission": 0,
-                                    "available": 0,
-                                    "investorID": "",
-                                    "preCredit": 0,
-                                    "preDeposit": 0,
-                                    "preBalance": 0,
-                                    "currMargin": 0,
-                                    "preMargin": 0,
-                                    "frozenCash": 0,
-                                    "settleMargin": 0,
-                                    "closeProfit": 0,
-                                    "positionProfit": 0,
-                                    "preMortgage": 0,
-                                    "balance": 0,
-                                    "withdrawQuota": 0,
-                                    "reserve": 0,
-                                    "deposit": 0,
-                                    "commission": 0,
-                                    "credit": 0,
-                                    "return": 0,
-                                    "withdraw": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "TestSuite": "TestSuite场景3",
-                        "id": 3,
-                        "TestSuiteDesc": "TestSuite场景3的描述",
-                        "TestSuiteData": [
-                            {
-                                "id": 5,
-                                "name": "qryPostionXml",
-                                "desc": "场景5",
-                                "input": {
-                                    "brokerID": "2016",
-                                    "instrumentID": "11001595",
-                                    "investorID": "1300",
-                                    "comboID": "000"
-                                },
-                                "expectResult": {
-                                    "longFrozenAmount": 0,
-                                    "closeYdAmount": 0,
-                                    "longFrozen": 0,
-                                    "closeAmount": 0,
-                                    "todayPositionCost": 0,
-                                    "ydPosition": 0,
-                                    "preSettlementPrice": 0,
-                                    "preMargin": 0,
-                                    "ydPositionCost": 0,
-                                    "closeProfit": 0,
-                                    "positionProfit": 0,
-                                    "positionCost": 0,
-                                    "closeYdVolume": 0,
-                                    "tradingDay": 0,
-                                    "closeVolume": 0,
-                                    "openVolume": 0,
-                                    "commission": 0,
-                                    "todayPosition": 0,
-                                    "useMargin": 0,
-                                    "frozenMargin": 0,
-                                    "frozenCommission": 0,
-                                    "availablePosition": 0,
-                                    "shortFrozenAmount": 0,
-                                    "posiDirection": "",
-                                    "frozenCash": 0,
-                                    "openAmount": 0,
-                                    "hedgeFlag": "",
-                                    "shortFrozen": 0,
-                                    "settlementPrice": 0,
-                                    "position": "164",
-                                    "return": 0
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "name": "qryPostionXml",
-                                "desc": "场景6",
-                                "input": {
-                                    "brokerID": "2016",
-                                    "instrumentID": "11001596",
-                                    "investorID": "1300",
-                                    "comboID": "000"
-                                },
-                                "expectResult": {
-                                    "longFrozenAmount": 0,
-                                    "closeYdAmount": 0,
-                                    "longFrozen": 0,
-                                    "closeAmount": 0,
-                                    "todayPositionCost": 0,
-                                    "ydPosition": 0,
-                                    "preSettlementPrice": 0,
-                                    "preMargin": 0,
-                                    "ydPositionCost": 0,
-                                    "closeProfit": 0,
-                                    "positionProfit": 0,
-                                    "positionCost": 0,
-                                    "closeYdVolume": 0,
-                                    "tradingDay": 0,
-                                    "closeVolume": 0,
-                                    "openVolume": 0,
-                                    "commission": 0,
-                                    "todayPosition": 0,
-                                    "useMargin": 0,
-                                    "frozenMargin": 0,
-                                    "frozenCommission": 0,
-                                    "availablePosition": 0,
-                                    "shortFrozenAmount": 0,
-                                    "posiDirection": "",
-                                    "frozenCash": 0,
-                                    "openAmount": 0,
-                                    "hedgeFlag": "",
-                                    "shortFrozen": 0,
-                                    "settlementPrice": 0,
-                                    "position": "0.0",
-                                    "return": 0
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "name": "qryComboXml",
-                                "desc": "场景7",
-                                "input": {
-                                    "brokerID": "2016",
-                                    "investorID": "1300",
-                                    "comboID": "000"
-                                },
-                                "expectResult": {
-                                    "comboName": "default_combo",
-                                    "comboID": "000",
-                                    "return": 0
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "name": "qryComboXml",
-                                "desc": "场景8",
-                                "input": {
-                                    "brokerID": "2016",
-                                    "investorID": "1301"
-                                },
-                                "expectResult": {
-                                    "comboName": "",
-                                    "return": 0
-                                }
-                            },
-                            {
-                                "id": 9,
-                                "name": "qryOrderXml",
-                                "desc": "场景9",
-                                "input": {
-                                    "exchangeID": "SSE",
-                                    "orderLocalID": "OrderLocalID",
-                                    "brokerID": "2016",
-                                    "instrumentID": "11001595",
-                                    "investorID": "1300",
-                                    "comboID": "000"
-                                },
-                                "expectResult": {
-                                    "volume": 0,
-                                    "thirdReff": 0,
-                                    "tradeAmount": 0,
-                                    "brokerID": "2016",
-                                    "sequenceNo": 0,
-                                    "returnqryInstrument": 0,
-                                    "orderRef": 0,
-                                    "brokerOrderSeq": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "TestSuite": "TestSuite场景4",
-                        "id": 4,
-                        "TestSuiteDesc": "TestSuite场景4的描述",
-                        "TestSuiteData": [
-                            {
-                                "id": 10,
-                                "name": "qryOrderXml",
-                                "desc": "场景10",
-                                "input": {
-                                    "exchangeID": "SSE",
-                                    "orderLocalID": "unExistID",
-                                    "brokerID": "2016",
-                                    "instrumentID": "11001595",
-                                    "investorID": "1300",
-                                    "comboID": "000"
-                                },
-                                "expectResult": {
-                                    "volume": 0,
-                                    "thirdReff": 0,
-                                    "tradeAmount": 0,
-                                    "brokerID": "",
-                                    "sequenceNo": 0,
-                                    "returnqryInstrument": 0,
-                                    "orderRef": 0,
-                                    "brokerOrderSeq": 0
-                                }
-                            },
-                            {
-                                "id": 11,
-                                "name": "qryOrderXml",
-                                "desc": "场景11",
-                                "input": {
-                                    "exchangeID": "SSE",
-                                    "brokerID": "2016",
-                                    "instrumentID": "11001595",
-                                    "investorID": "1300",
-                                    "comboID": "000"
-                                },
-                                "expectResult": {
-                                    "volume": 0,
-                                    "thirdReff": 0,
-                                    "tradeAmount": 0,
-                                    "brokerID": "2016",
-                                    "sequenceNo": 0,
-                                    "returnqryInstrument": 0,
-                                    "orderRef": 0,
-                                    "brokerOrderSeq": 0
-                                }
-                            },
-                            {
-                                "id": 12,
-                                "name": "sendOrderxml",
-                                "desc": "场景12",
-                                "input": {
-                                    "orderPriceType": "2",
-                                    "thirdReff": 2042,
-                                    "brokerID": "2016",
-                                    "limitPrice": 15.06,
-                                    "instrumentID": "600000",
-                                    "investorID": "0301",
-                                    "comboID": "000",
-                                    "volumeTotalOriginal": 100,
-                                    "exchangeID": "SSE",
-                                    "combOffsetFlag": "0",
-                                    "orderRef": 333,
-                                    "minVolume": 1,
-                                    "combHedgeFlag": "1",
-                                    "volumeCondition": "1",
-                                    "contingentCondition": "1",
-                                    "timeCondition": "3",
-                                    "direction": "0"
-                                },
-                                "expectResult": {
-                                    "volume": 0,
-                                    "thirdReff": 0,
-                                    "tradeAmount": 0,
-                                    "brokerID": "2016",
-                                    "sequenceNo": 0,
-                                    "orderRef": 0,
-                                    "brokerOrderSeq": 0,
-                                    "return": 0
-                                }
-                            },
-                            {
-                                "id": 13,
-                                "name": "sendOrderxml",
-                                "desc": "场景13",
-                                "input": {
-                                    "orderPriceType": "2",
-                                    "thirdReff": 2042,
-                                    "brokerID": "2016",
-                                    "limitPrice": 15.06,
-                                    "instrumentID": "600000",
-                                    "investorID": "0301",
-                                    "comboID": "000",
-                                    "volumeTotalOriginal": 100,
-                                    "exchangeID": "SSE",
-                                    "combOffsetFlag": "0",
-                                    "orderRef": 444,
-                                    "minVolume": 1,
-                                    "combHedgeFlag": "1",
-                                    "volumeCondition": "1",
-                                    "contingentCondition": "1",
-                                    "timeCondition": "3",
-                                    "direction": "0"
-                                },
-                                "expectResult": {
-                                    "volume": 0,
-                                    "thirdReff": 0,
-                                    "tradeAmount": 0,
-                                    "brokerID": "2016",
-                                    "sequenceNo": 0,
-                                    "orderRef": 0,
-                                    "brokerOrderSeq": 0,
-                                    "return": 0
-                                }
-                            }
-                        ]
-                    }
-                ]
-
-
-            },
+            { },
             testcasedata: [],
             fold: false,
-            mydata: [],
-            olddata: [
-                {
-                    'password': '123456',
-                    'userID': '0301',
-                    'brokerID': '2016',
-                    'spi': 'tradespi',
-                    'system': 'NTSStock',
-                    'testdata':
-                    [
-                        {
-                            id: 1,
-                            name: 'qryInstrumentXml',
-                            desc: '场景1',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'instrumentID': '11001595'
-                            },
-                            'expectResult': {
-                                'volumeMultiple': 0,
-                                'trading': false,
-                                'productClass': '',
-                                'returnqryInstrument': -1,
-                                'execPrice': 0,
-                                'unitMargin': 0,
-                                'priceTick': 0
-                            }
-                        },
-                        {
-                            id: 2,
-                            name: 'qryInstrumentXml',
-                            desc: '场景2',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'instrumentID': '11001596'
-                            },
-                            'expectResult': {
-                                'volumeMultiple': 0,
-                                'trading': false,
-                                'productClass': '',
-                                'returnqryInstrument': -1,
-                                'execPrice': 0,
-                                'unitMargin': 0,
-                                'priceTick': 0
-                            }
-                        },
-                        {
-                            id: 3,
-                            name: 'qryTradingAccountXml',
-                            desc: '场景3',
-                            'input': {
-                                'brokerID': '2016',
-                                'investorID': '1300',
-                                'comboID': '000',
-                                'assetNo': '2066'
-                            },
-                            'expectResult': {
-                                'frozenMargin': 0,
-                                'cashIn': 0,
-                                'frozenCommission': 0,
-                                'available': 0,
-                                'investorID': '',
-                                'preCredit': 0,
-                                'preDeposit': 0,
-                                'preBalance': 0,
-                                'currMargin': 0,
-                                'preMargin': 0,
-                                'frozenCash': 0,
-                                'settleMargin': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'preMortgage': 0,
-                                'balance': 0,
-                                'withdrawQuota': 0,
-                                'reserve': 0,
-                                'deposit': 0,
-                                'commission': 0,
-                                'credit': 0,
-                                'return': 0,
-                                'withdraw': 0
-                            }
-                        },
-                        {
-                            id: 4,
-                            name: 'qryTradingAccountXml',
-                            desc: '场景4',
-                            'input': {
-                                'investorID': '1300',
-                                'comboID': '333',
-                                'assetNo': '2066'
-                            },
-                            'expectResult': {
-                                'frozenMargin': 0,
-                                'cashIn': 0,
-                                'frozenCommission': 0,
-                                'available': 0,
-                                'investorID': '',
-                                'preCredit': 0,
-                                'preDeposit': 0,
-                                'preBalance': 0,
-                                'currMargin': 0,
-                                'preMargin': 0,
-                                'frozenCash': 0,
-                                'settleMargin': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'preMortgage': 0,
-                                'balance': 0,
-                                'withdrawQuota': 0,
-                                'reserve': 0,
-                                'deposit': 0,
-                                'commission': 0,
-                                'credit': 0,
-                                'return': 0,
-                                'withdraw': 0
-                            }
-                        },
-                        {
-                            id: 5,
-                            name: 'qryPostionXml',
-                            desc: '场景5',
-                            'input': {
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'longFrozenAmount': 0,
-                                'closeYdAmount': 0,
-                                'longFrozen': 0,
-                                'closeAmount': 0,
-                                'todayPositionCost': 0,
-                                'ydPosition': 0,
-                                'preSettlementPrice': 0,
-                                'preMargin': 0,
-                                'ydPositionCost': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'positionCost': 0,
-                                'closeYdVolume': 0,
-                                'tradingDay': 0,
-                                'closeVolume': 0,
-                                'openVolume': 0,
-                                'commission': 0,
-                                'todayPosition': 0,
-                                'useMargin': 0,
-                                'frozenMargin': 0,
-                                'frozenCommission': 0,
-                                'availablePosition': 0,
-                                'shortFrozenAmount': 0,
-                                'posiDirection': '',
-                                'frozenCash': 0,
-                                'openAmount': 0,
-                                'hedgeFlag': '',
-                                'shortFrozen': 0,
-                                'settlementPrice': 0,
-                                'position': '164',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 6,
-                            name: 'qryPostionXml',
-                            desc: '场景6',
-                            'input': {
-                                'brokerID': '2016',
-                                'instrumentID': '11001596',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'longFrozenAmount': 0,
-                                'closeYdAmount': 0,
-                                'longFrozen': 0,
-                                'closeAmount': 0,
-                                'todayPositionCost': 0,
-                                'ydPosition': 0,
-                                'preSettlementPrice': 0,
-                                'preMargin': 0,
-                                'ydPositionCost': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'positionCost': 0,
-                                'closeYdVolume': 0,
-                                'tradingDay': 0,
-                                'closeVolume': 0,
-                                'openVolume': 0,
-                                'commission': 0,
-                                'todayPosition': 0,
-                                'useMargin': 0,
-                                'frozenMargin': 0,
-                                'frozenCommission': 0,
-                                'availablePosition': 0,
-                                'shortFrozenAmount': 0,
-                                'posiDirection': '',
-                                'frozenCash': 0,
-                                'openAmount': 0,
-                                'hedgeFlag': '',
-                                'shortFrozen': 0,
-                                'settlementPrice': 0,
-                                'position': '0.0',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 7,
-                            name: 'qryComboXml',
-                            desc: '场景7',
-                            'input': {
-                                'brokerID': '2016',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'comboName': 'default_combo',
-                                'comboID': '000',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 8,
-                            name: 'qryComboXml',
-                            desc: '场景8',
-                            'input': {
-                                'brokerID': '2016',
-                                'investorID': '1301'
-                            },
-                            'expectResult': {
-                                'comboName': '',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 9,
-                            name: 'qryOrderXml',
-                            desc: '场景9',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'orderLocalID': 'OrderLocalID',
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'returnqryInstrument': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0
-                            }
-                        },
-                        {
-                            id: 10,
-                            name: 'qryOrderXml',
-                            desc: '场景10',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'orderLocalID': 'unExistID',
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '',
-                                'sequenceNo': 0,
-                                'returnqryInstrument': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0
-                            }
-                        },
-                        {
-                            id: 11,
-                            name: 'qryOrderXml',
-                            desc: '场景11',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'returnqryInstrument': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0
-                            }
-                        },
-                        {
-                            id: 12,
-                            name: 'sendOrderxml',
-                            desc: '场景12',
-                            'input': {
-                                'orderPriceType': '2',
-                                'thirdReff': 2042,
-                                'brokerID': '2016',
-                                'limitPrice': 15.06,
-                                'instrumentID': '600000',
-                                'investorID': '0301',
-                                'comboID': '000',
-                                'volumeTotalOriginal': 100,
-                                'exchangeID': 'SSE',
-                                'combOffsetFlag': '0',
-                                'orderRef': 333,
-                                'minVolume': 1,
-                                'combHedgeFlag': '1',
-                                'volumeCondition': '1',
-                                'contingentCondition': '1',
-                                'timeCondition': '3',
-                                'direction': '0'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0,
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 13,
-                            name: 'sendOrderxml',
-                            desc: '场景13',
-                            'input': {
-                                'orderPriceType': '2',
-                                'thirdReff': 2042,
-                                'brokerID': '2016',
-                                'limitPrice': 15.06,
-                                'instrumentID': '600000',
-                                'investorID': '0301',
-                                'comboID': '000',
-                                'volumeTotalOriginal': 100,
-                                'exchangeID': 'SSE',
-                                'combOffsetFlag': '0',
-                                'orderRef': 444,
-                                'minVolume': 1,
-                                'combHedgeFlag': '1',
-                                'volumeCondition': '1',
-                                'contingentCondition': '1',
-                                'timeCondition': '3',
-                                'direction': '0'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0,
-                                'return': 0
-                            }
-                        },
-                    ]
-                }
+            interface1: {
+          id:'',
+          casename:'',
+          casedesc:'',
+          caseinput:'',
+          caseexpectResult:''
 
-            ],
-            mydata1: [
-                {
-                    'password': '123456',
-                    'userID': '0301',
-                    'brokerID': '2016',
-                    'spi': 'tradespi',
-                    'system': 'NTSStock',
-                    'testdata':
-                    [
-                        {
-                            id: 1,
-                            name: 'qryInstrumentXml',
-                            desc: '场景1',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'instrumentID': '11001595'
-                            },
-                            'expectResult': {
-                                'volumeMultiple': 0,
-                                'trading': false,
-                                'productClass': '',
-                                'returnqryInstrument': -1,
-                                'execPrice': 0,
-                                'unitMargin': 0,
-                                'priceTick': 0
-                            }
-                        },
-                        {
-                            id: 2,
-                            name: 'qryInstrumentXml',
-                            desc: '场景2',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'instrumentID': '11001596'
-                            },
-                            'expectResult': {
-                                'volumeMultiple': 0,
-                                'trading': false,
-                                'productClass': '',
-                                'returnqryInstrument': -1,
-                                'execPrice': 0,
-                                'unitMargin': 0,
-                                'priceTick': 0
-                            }
-                        },
-                        {
-                            id: 3,
-                            name: 'qryTradingAccountXml',
-                            desc: '场景3',
-                            'input': {
-                                'brokerID': '2016',
-                                'investorID': '1300',
-                                'comboID': '000',
-                                'assetNo': '2066'
-                            },
-                            'expectResult': {
-                                'frozenMargin': 0,
-                                'cashIn': 0,
-                                'frozenCommission': 0,
-                                'available': 0,
-                                'investorID': '',
-                                'preCredit': 0,
-                                'preDeposit': 0,
-                                'preBalance': 0,
-                                'currMargin': 0,
-                                'preMargin': 0,
-                                'frozenCash': 0,
-                                'settleMargin': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'preMortgage': 0,
-                                'balance': 0,
-                                'withdrawQuota': 0,
-                                'reserve': 0,
-                                'deposit': 0,
-                                'commission': 0,
-                                'credit': 0,
-                                'return': 0,
-                                'withdraw': 0
-                            }
-                        },
-                        {
-                            id: 4,
-                            name: 'qryTradingAccountXml',
-                            desc: '场景4',
-                            'input': {
-                                'investorID': '1300',
-                                'comboID': '333',
-                                'assetNo': '2066'
-                            },
-                            'expectResult': {
-                                'frozenMargin': 0,
-                                'cashIn': 0,
-                                'frozenCommission': 0,
-                                'available': 0,
-                                'investorID': '',
-                                'preCredit': 0,
-                                'preDeposit': 0,
-                                'preBalance': 0,
-                                'currMargin': 0,
-                                'preMargin': 0,
-                                'frozenCash': 0,
-                                'settleMargin': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'preMortgage': 0,
-                                'balance': 0,
-                                'withdrawQuota': 0,
-                                'reserve': 0,
-                                'deposit': 0,
-                                'commission': 0,
-                                'credit': 0,
-                                'return': 0,
-                                'withdraw': 0
-                            }
-                        },
-                        {
-                            id: 5,
-                            name: 'qryPostionXml',
-                            desc: '场景5',
-                            'input': {
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'longFrozenAmount': 0,
-                                'closeYdAmount': 0,
-                                'longFrozen': 0,
-                                'closeAmount': 0,
-                                'todayPositionCost': 0,
-                                'ydPosition': 0,
-                                'preSettlementPrice': 0,
-                                'preMargin': 0,
-                                'ydPositionCost': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'positionCost': 0,
-                                'closeYdVolume': 0,
-                                'tradingDay': 0,
-                                'closeVolume': 0,
-                                'openVolume': 0,
-                                'commission': 0,
-                                'todayPosition': 0,
-                                'useMargin': 0,
-                                'frozenMargin': 0,
-                                'frozenCommission': 0,
-                                'availablePosition': 0,
-                                'shortFrozenAmount': 0,
-                                'posiDirection': '',
-                                'frozenCash': 0,
-                                'openAmount': 0,
-                                'hedgeFlag': '',
-                                'shortFrozen': 0,
-                                'settlementPrice': 0,
-                                'position': '164',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 6,
-                            name: 'qryPostionXml',
-                            desc: '场景6',
-                            'input': {
-                                'brokerID': '2016',
-                                'instrumentID': '11001596',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'longFrozenAmount': 0,
-                                'closeYdAmount': 0,
-                                'longFrozen': 0,
-                                'closeAmount': 0,
-                                'todayPositionCost': 0,
-                                'ydPosition': 0,
-                                'preSettlementPrice': 0,
-                                'preMargin': 0,
-                                'ydPositionCost': 0,
-                                'closeProfit': 0,
-                                'positionProfit': 0,
-                                'positionCost': 0,
-                                'closeYdVolume': 0,
-                                'tradingDay': 0,
-                                'closeVolume': 0,
-                                'openVolume': 0,
-                                'commission': 0,
-                                'todayPosition': 0,
-                                'useMargin': 0,
-                                'frozenMargin': 0,
-                                'frozenCommission': 0,
-                                'availablePosition': 0,
-                                'shortFrozenAmount': 0,
-                                'posiDirection': '',
-                                'frozenCash': 0,
-                                'openAmount': 0,
-                                'hedgeFlag': '',
-                                'shortFrozen': 0,
-                                'settlementPrice': 0,
-                                'position': '0.0',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 7,
-                            name: 'qryComboXml',
-                            desc: '场景7',
-                            'input': {
-                                'brokerID': '2016',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'comboName': 'default_combo',
-                                'comboID': '000',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 8,
-                            name: 'qryComboXml',
-                            desc: '场景8',
-                            'input': {
-                                'brokerID': '2016',
-                                'investorID': '1301'
-                            },
-                            'expectResult': {
-                                'comboName': '',
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 9,
-                            name: 'qryOrderXml',
-                            desc: '场景9',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'orderLocalID': 'OrderLocalID',
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'returnqryInstrument': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0
-                            }
-                        },
-                        {
-                            id: 10,
-                            name: 'qryOrderXml',
-                            desc: '场景10',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'orderLocalID': 'unExistID',
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '',
-                                'sequenceNo': 0,
-                                'returnqryInstrument': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0
-                            }
-                        },
-                        {
-                            id: 11,
-                            name: 'qryOrderXml',
-                            desc: '场景11',
-                            'input': {
-                                'exchangeID': 'SSE',
-                                'brokerID': '2016',
-                                'instrumentID': '11001595',
-                                'investorID': '1300',
-                                'comboID': '000'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'returnqryInstrument': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0
-                            }
-                        },
-                        {
-                            id: 12,
-                            name: 'sendOrderxml',
-                            desc: '场景12',
-                            'input': {
-                                'orderPriceType': '2',
-                                'thirdReff': 2042,
-                                'brokerID': '2016',
-                                'limitPrice': 15.06,
-                                'instrumentID': '600000',
-                                'investorID': '0301',
-                                'comboID': '000',
-                                'volumeTotalOriginal': 100,
-                                'exchangeID': 'SSE',
-                                'combOffsetFlag': '0',
-                                'orderRef': 333,
-                                'minVolume': 1,
-                                'combHedgeFlag': '1',
-                                'volumeCondition': '1',
-                                'contingentCondition': '1',
-                                'timeCondition': '3',
-                                'direction': '0'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0,
-                                'return': 0
-                            }
-                        },
-                        {
-                            id: 13,
-                            name: 'sendOrderxml',
-                            desc: '场景13',
-                            'input': {
-                                'orderPriceType': '2',
-                                'thirdReff': 2042,
-                                'brokerID': '2016',
-                                'limitPrice': 15.06,
-                                'instrumentID': '600000',
-                                'investorID': '0301',
-                                'comboID': '000',
-                                'volumeTotalOriginal': 100,
-                                'exchangeID': 'SSE',
-                                'combOffsetFlag': '0',
-                                'orderRef': 444,
-                                'minVolume': 1,
-                                'combHedgeFlag': '1',
-                                'volumeCondition': '1',
-                                'contingentCondition': '1',
-                                'timeCondition': '3',
-                                'direction': '0'
-                            },
-                            'expectResult': {
-                                'volume': 0,
-                                'thirdReff': 0,
-                                'tradeAmount': 0,
-                                'brokerID': '2016',
-                                'sequenceNo': 0,
-                                'orderRef': 0,
-                                'brokerOrderSeq': 0,
-                                'return': 0
-                            }
-                        },
-                    ]
-                }
-
-            ],
+        },
+            mydata1: {},
             tableData: [],
             totalMoney: 0,
             totalCount: 0,
@@ -1536,86 +333,15 @@ export default {
             type3Goods: [],
             oftenGoods: [],
             often2Goods: [],
-            columns: [
-                {
-                    text: '姓名',
-                    dataIndex: 'name'
-                },
-                {
-                    text: '年龄',
-                    dataIndex: 'age'
-                },
-                {
-                    text: '性别',
-                    dataIndex: 'sex'
-                }
-            ],
-            dataSource: [
-                {
-                    id: 1,
-                    parentId: 0,
-                    name: '测试1',
-                    age: 18,
-                    sex: '男',
-                    children: [
-                        {
-                            id: 2,
-                            parentId: 1,
-                            name: '测试2',
-                            age: 22,
-                            sex: '男'
-                        }
-                    ]
-                },
-                {
-                    id: 3,
-                    parentId: 0,
-                    name: '测试3',
-                    age: 23,
-                    sex: '女',
-                    children: [
-                        {
-                            id: 4,
-                            parentId: 3,
-                            name: '测试4',
-                            age: 22,
-                            sex: '男'
-                        },
-                        {
-                            id: 5,
-                            parentId: 3,
-                            name: '测试5',
-                            age: 25,
-                            sex: '男'
-                        },
-                        {
-                            id: 6,
-                            parentId: 3,
-                            name: '测试6',
-                            age: 26,
-                            sex: '女',
-                            children: [
-                                {
-                                    id: 7,
-                                    parentId: 6,
-                                    name: '测试7',
-                                    age: 27,
-                                    sex: '男'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 18,
-                    parentId: 0,
-                    name: '测试8',
-                    age: 18,
-                    sex: '男'
-                }
-            ]
+            scene: {
+              id:'',
+              TestSuite:'',
+              TestSuiteDesc:'',
+              TestSuiteData:'',
+              },
 
         }
+         
     },
     created() {
         // axios.get('http://jspang.com/DemoApi/oftenGoods.php').then(reponse => {
@@ -1626,9 +352,13 @@ export default {
         //         alert('网络错误')
         //     })
 
-       axios.get('http://localhost:8081/myapp/mvc/hello.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-           this.mydata = response.data
-           console.log(this.mydata)
+       axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+           this.mydata1 = response.data
+           
+       }),
+       axios.get('http://localhost:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+           this.testSuite = response.data
+           
        }),
 
 
@@ -1712,12 +442,30 @@ export default {
             })
         },
         addnewTestsuite() {
-            var testSuite = {
-                "TestSuite": this.form.TestSuite,
-                "TestSuiteDesc": this.form.TestSuiteDesc,
-                "id": this.form.id, "TestSuiteData": []
-            }
-            this.testSuite.data.push(testSuite)
+            var that=this
+            this.scene.id="",
+            this.scene.TestSuite=this.form.TestSuite
+            this.scene.TestSuiteDesc=this.form.TestSuiteDesc
+            this.scene.TestSuiteData=this.form.TestSuiteData
+            // this.testSuite.data.push(testSuite)
+            axios.post('http://localhost:8081/myapp/testscene/add.do', this.scene, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                   that.updatescene()
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+            this.$nextTick(function () {
+                //  console.log(this.$el.textContent.olddata)
+
+                // this.testSuiteDetails = this.testSuiteClick
+                //  window.location.reload();
+            })
             this.$nextTick(function () {
                 this.dialogFormVisible = false
             })
@@ -1725,41 +473,105 @@ export default {
 
         },
         showTestSuiteDetail(testSuite) {
-            this.testSuiteDetails = testSuite
-        },
-        //  savebackend () {
-        //    this.olddata[0].testdata[this.oftenGoods.id]=JSON.parse(JSON.stringify(this.oftenGoods));
-        //    console.log(this.olddata[0].testdata[this.oftenGoods.id].input.exchangeID)
-        // },
-        save() {
-            let id = this.oftenGoods.id;
-            //console.log(this.mydata1[0].testdata);
-            for (let i = 0; i < this.mydata1[0].testdata.length; i++) {
-                let test = this.mydata1[0].testdata[i];
-                if (test.id == id) {
-                    this.mydata1[0].testdata[i] = this.oftenGoods;
-                }
-
+            this.testSuiteClick=testSuite
+            let s={
+                ids:testSuite.TestSuiteData
             }
+            
+            axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s,{ headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            
+            this.testSuiteDetails = response.data
+            
+
+           
+       })
+           
+        },
+       
+        save() {
+            
+            this.interface1.id=this.oftenGoods.id
+            this.interface1.casename=this.oftenGoods.name
+            this.interface1.casedesc=this.oftenGoods.desc
+            this.interface1.caseinput=this.oftenGoods.input
+            this.interface1.caseexpectResult=this.oftenGoods.expectResult
+            axios.post('http://localhost:8081/myapp/mvc/update.do', this.interface1, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                    console.log(response);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+       this.$nextTick(function () {
+               
+            })
+           
 
         },
 
         addSuiteList(testSuiteFocus) {
            
-          
-           this.testSuiteClick = testSuiteFocus
-           if(this.testcasedata.length>1){
-           for(let  i=0;i<this.testcasedata.length;i++){
-               this.testSuiteClick.TestSuiteData.push(this.testcasedata[i])
+           var that=this
+           this.testSuiteClick = testSuiteFocus     
+           var variable1=this.testSuiteClick.TestSuiteData
+           if (variable1 !== '') { 
+            if(this.testcasedata.length>1){
+              console.log("aaaaaaaa")
+              for(let  i=0;i<this.testcasedata.length;i++){
+              
+
+               this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata[i].id)
+         
+               
+                }
+             }else{
+              console.log("bbbbbb")
+              this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
+              
+              
             }
            }else{
-              this.testSuiteClick.TestSuiteData.push(this.testcasedata) 
-           }
+              if(this.testcasedata.length>1){
+                   console.log("cccccccccc")
+                 var s=new String(this.testcasedata[0].id)
+              for(let  i=1;i<this.testcasedata.length;i++){
+              s=s.concat(",").concat(this.testcasedata[i].id)
 
+               this.testSuiteClick.TestSuiteData=s
+               console.log(this.testSuiteClick.TestSuiteData)
+               
+                }
+             }else{
+                  console.log("aaadddddddddddaaaaa")
+              this.testSuiteClick.TestSuiteData=this.testcasedata.id.toString()
+              console.log(this.testSuiteClick.TestSuiteData)
+
+            }
+            
+        }
+          
+           axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                    console.log(response);
+                    that.showTestSuiteDetail(testSuiteFocus)
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
             this.$nextTick(function () {
                 //  console.log(this.$el.textContent.olddata)
 
-                this.testSuiteDetails = this.testSuiteClick
+                // this.testSuiteDetails = this.testSuiteClick
                 //  window.location.reload();
             })
         },
@@ -1769,11 +581,9 @@ export default {
             //深度拷贝
 
             this.mydata1 = JSON.parse(JSON.stringify(this.olddata))
-            this.oftenGoods = JSON.parse(JSON.stringify(this.olddata[0].testdata[this.oftenGoods.id]))
+            this.oftenGoods = JSON.parse(JSON.stringify(this.olddata.testdata[this.oftenGoods.id]))
             this.$nextTick(function () {
-                //  console.log(this.$el.textContent.olddata)
-                // console.log(this.olddata[0].testdata[this.oftenGoods.id].input.exchangeID)
-                //  window.location.reload();
+                
             })
 
         },
@@ -1781,9 +591,7 @@ export default {
             this.fold = false
             this.show2Right=false
               this.$nextTick(function () {
-                //  console.log(this.$el.textContent.olddata)
-                // console.log(this.olddata[0].testdata[this.oftenGoods.id].input.exchangeID)
-                //  window.location.reload();
+                
             })
 
         },
@@ -1799,10 +607,11 @@ export default {
             this.fold = true
 
         },
-        update() {
-            this.mydata1 = JSON.parse(JSON.stringify(this.olddata))
-            console.log(this.mydata)
-            console.log(this.mydata1[0])
+        updatedate() {
+           axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+           this.mydata1 = response.data
+           
+       }),
             this.$nextTick(function () {
 
             })
@@ -1842,7 +651,7 @@ export default {
         },
         search(input) {
             let test = []
-            this.mydata1[0].testdata.forEach(
+            this.mydata1.testdata.forEach(
                 function (val, index, arr) {
                     if (arr[index].name.indexOf(input) !== -1) {
 
@@ -1855,7 +664,7 @@ export default {
 
             )
             console.log(test.length)
-            this.mydata1[0].testdata = test
+            this.mydata1.testdata = test
             this.$nextTick(function () {
 
             })
@@ -1869,13 +678,61 @@ export default {
             })
 
         },
-
-        deltestdata(index, testcase) {
-            console.log(index)
-            this.mydata1[0].testdata.splice(index, 1)
-            this.$nextTick(function () {
+        updatescene(){
+            axios.get('http://localhost:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+           this.testSuite = response.data
+           
+       }),
+          this.$nextTick(function () {
 
             })
+        },
+        deletescenedata(index, testscene){
+            var that=this 
+            axios.post('http://localhost:8081/myapp/testscene/delete.do', testscene.id, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                    console.log(this);
+                     that.updatescene()
+                     let s={
+                ids:"0"
+            }
+            
+            axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s,{ headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            
+            that.testSuiteDetails = response.data
+            
+
+           
+       })
+                     })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
+                   this.$nextTick(function () {
+               
+            })
+        },
+        deltestdata(index, testcase) {
+            var that=this
+            axios.post('http://localhost:8081/myapp/mvc/delete.do', testcase.id, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                    console.log(this);
+                     that.updatedate()
+                     })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
+            
 
         },
         addtestscene(testsuite) {
@@ -1886,15 +743,33 @@ export default {
 
         },
         deltestcase(index, testcase) {
-            let test11 = testcase
-            this.index = index + 1
-            console.log(test11)
-            console.log(test11)
-            this.testSuiteDetails.TestSuiteData.splice(this.index - 1, 1)
-            if (this.testSuiteDetails.TestSuiteData.length === 0) {
+            var that=this
+           console.log(this.testSuiteClick.TestSuiteData)
+           var ss=this.testSuiteClick.TestSuiteData.split(",")
+           ss.splice(index,1)
+           this.testSuiteClick.TestSuiteData=ss.toString()
+           axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                    console.log(response);
+                    that.showTestSuiteDetail(that.testSuiteClick)
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+            this.$nextTick(function () {
+               
+            })
+            console.log(this.testSuiteDetails)
+            
+            if (this.testSuiteDetails.length === 0) {
                 this.show2Right = false
             }
-            if (test11.id != this.often2Goods.id) {
+            if (testcase.id != this.often2Goods.id) {
                 return;
             } else {
                 this.show2Right = false
@@ -1904,13 +779,6 @@ export default {
 
             })
 
-            //    this.testSuiteClick.TestSuiteData.$remove(testcase)
-            //    this.$nextTick(function () {
-            //         //  console.log(this.$el.textContent.olddata)
-
-            //          this.testSuiteDetails= this.testSuiteClick
-            //         //  window.location.reload();
-            //     })
         },
         deleteAllGoods() {
             this.tableData = []

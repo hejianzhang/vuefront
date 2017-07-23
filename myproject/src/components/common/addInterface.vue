@@ -1,9 +1,7 @@
 <template>
 
                         <el-form :model="interface" ref="interface" label-width="100px" class="demo-dynamic">
-                            <el-form-item prop="id"  label="id"   >
-                            <el-input v-model="interface.id"></el-input>
-                            </el-form-item>
+                            
                             <el-form-item prop="name"  label="名字"  >
                             <el-input v-model="interface.name"></el-input>
                             </el-form-item>
@@ -67,7 +65,7 @@
        this.interface1.casedesc=this.interface.desc
        this.interface1.caseinput=this.interface.input
        this.interface1.caseexpectResult=this.interface.expectResult
-
+       var that=this.$parent
        axios.post('http://localhost:8081/myapp/mvc/add.do', this.interface1, {
                       headers: {
                            'X-Requested-With': 'XMLHttpRequest',
@@ -76,12 +74,13 @@
                   })
                   .then(function (response) {
                     console.log(response);
+                    that.updatedate()
                   })
                   .catch(function (error) {
                     console.log(error);
                   });
        this.$nextTick(function () {
-               
+              
             })
       alert("id:  "+this.interface.id+"  name: "+this.interface.name+"   添加成功")
       },
