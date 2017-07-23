@@ -59,7 +59,8 @@
                     
                     <el-tab-pane label="测试场景">
                         <div class="hello">
-                            <el-table :data="testscene" border>
+                            <el-table :data="testscene" border @selection-change="handleSelectionChange2">
+                                <el-table-column type="selection" width="50px"></el-table-column>
                                 <el-table-column  size="small" type="index" width="80"></el-table-column>
                                 <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
                                 <el-table-column prop="TestSuite" label="场景名称" width="160"></el-table-column>
@@ -84,7 +85,7 @@
     
                         </div>
                         <div class="totalDiv">
-                            <el-button type="success" size="small" min-width="30%" @click="runAll(testscene)">全部运行</el-button>
+                            <el-button type="success" size="small" min-width="30%" @click="runAll()">全部运行</el-button>
                         </div>
                     </el-tab-pane>
                     <!-- <el-tab-pane label="测试结果">
@@ -289,6 +290,7 @@ export default {
     name: 'Pos',
     data() {
         return {
+            selectexeScene: [],
             selectaddtest: [],
             selectaddTestSuite:[],
             InterfaceFlag: false,
@@ -387,8 +389,40 @@ export default {
        },
        handleSelectionChange(val) {
        this.selectaddTestSuite = val
-      
-            },
+       },
+       handleSelectionChange2(val){
+           this.selectexeScene=val
+       },
+       runAll(){
+          let s=new String(this.selectexeScene[0].id)
+          if(this.selectexeScene.length>1){
+              
+          for(var i=1;i<this.selectexeScene.length;i++){
+               s=s.concat(",").concat(this.selectexeScene[i].id)
+               
+               }
+          }
+          let m={
+              ids:s
+          }
+        axios.post('http://localhost:8081/myapp/exResults/add.do', m, {
+                      headers: {
+                           'X-Requested-With': 'XMLHttpRequest',
+                           
+                      }
+                  })
+                  .then(function (response) {
+                    
+                     })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
+            
+
+        this.$nextTick(function () {
+
+            })
+       },
        selectadd(){
           for(var i=0;i<this.selectaddTestSuite.length;i++){
                this.testscene.push(this.selectaddTestSuite[i])
@@ -894,12 +928,12 @@ export default {
     right: 50px;
 }
 
-.el-table::after{
+/* .el-table::after{
      content:"."; display:block; height:0; visibility:hidden; clear:both; 
 }
 .el-tabs__active-bar {
     visibility:hidden; clear:both; 
-}
+} */
 
 .addtestList-wrapper {
     position: fixed;
