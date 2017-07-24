@@ -4,124 +4,74 @@
 <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口"> </el-input>
 <el-button class="searchbutton" size="small" type="success" @click="searchResults(input)">搜索</el-button>
 <el-button class="searchbutton" size="small" type="primary" @click="refresh">刷新</el-button>
-<el-collapse v-for="(key,value) in testResults" :key="value" accordion>
-<el-collapse-item :title="key[Object.keys(key)[0]]"  name="1">
- <el-collapse v-for="(key1,value1) in key[Object.keys(key)[1]]" :key="value1" accordion>
-  <el-collapse-item :title="key1[Object.keys(key1)[0]]" name="1">
-    <div  v-for="(key2,value2) in key1[Object.keys(key1)[1]]" :key="value2">
+<div  v-for="(item,index) in ss">
+<el-collapse v-for="(key111,value) in item" :key="value" accordion>
+<el-collapse-item :title="value"  name="1">  
+ <el-collapse v-for="(key,value) in key111" :key="value" accordion>
+<el-collapse-item :title="key[Object.keys(key)[0]].name"  name="1">
+    <div v-for="(item,index) in key[Object.keys(key)[0]].data">
+   
+    <el-collapse   accordion>
+  <el-collapse-item :title="item['name']" name="1">
+    <div  v-for="(key2,value2) in item['testdata']" :key="value2">
 
         <el-tag  color="green" v-if="key2=== 'sucess'" type="success">{{value2}}:</el-tag>
         <el-tag  color="red"v-else-if="key2=== 'failed'" type="danger">{{value2}}:</el-tag>
         <el-tag  v-else type="primary">{{value2}}:</el-tag>
         {{key2}}
-        </div>
+     </div>
   </el-collapse-item>
-</el-collapse> 
+    </el-collapse>
+  </div>
+
+</el-collapse-item>
+</el-collapse>  
+
 </el-collapse-item>
 </el-collapse>
-  </div>
+</div>
+</div>
+
 </template>
 <script>
+import axios from 'axios'
 export default {
+    
    data() {
       return {
         input: '',
         oldata:[],
-        testResults: {
-            1:{
-            "name":"TestSuite场景1",
-            "data":{
-                testcase1:{
-                    name:"测试用例1",
-                "testdata" :{ 
-                    result:"sucess",
-                    message: 0
-                }
-                },
-                testcase2:{
-                    name:"测试用例2",
-                "testdata":{  
-                    result: "failed",
-                    message: "whyyyyyyyyy"
-                }
-                },
-                testcase3:{
-                    name:"测试用例3",
-                "testdata":{    
-                    result: "no running",
-                    message: "null"
-                }
-                },
-                testcase4:{
-                    name:"测试用例1",
-                "testdata":{  
-                    result: "no running",
-                    message: "null"
-                }
-                }
-            }
-            },
-           2:{
-            "name":"TestSuite场景2",
-            "data":{
-                testcase1:{
-                    name:"测试用例1",
-                "testdata" :{ 
-                    result:"sucess",
-                    message: 0
-                }
-                },
-                testcase2:{
-                    name:"测试用例2",
-                "testdata":{  
-                    result: "failed",
-                    message: "whyyyyyyyyy"
-                }
-                },
-                testcase3:{
-                    name:"测试用例3",
-                "testdata":{    
-                    result: "no running",
-                    message: "null"
-                }
-                },
-                testcase4:{
-                    name:"测试用例1",
-                "testdata":{  
-                    result: "no running",
-                    message: "null"
-                }
-                }
-            }
-            }
-        }
+        ss:[],
       };
     },
     methods:{
         searchResults(input){
-            // console.log("aaaaaaaaaaaaaa")
+            var that=this
             let test = []
-            for( var key2 in this.testResults){
-                let name=this.testResults[key2]
-                if(name[Object.keys(name)[0]].indexOf(input) !== -1){
-                    test.push(this.testResults[key2])
+            for( var key2 in this.ss){
+                let name=this.ss[key2]
+                 for( var key3 in name){
+              if(key3.indexOf(input) !== -1){
+                    test.push(this.ss[key2])
                  }
-                
+                 } 
             }
-           
-     
-           
-
-
-            console.log(test.length)
-            this.oldata=JSON.parse(JSON.stringify(this.testResults))
-            this.testResults = test
+            this.ss = test
             this.$nextTick(function () {
              
             })
         },
         refresh(){
-              this.testResults =this.oldata
+           var that=this
+            axios.get('http://localhost:8081/myapp/exResults/getAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+              that.ss = response.data
+               console.log(that.ss)
+            
+           }),
+           console.log(this.ss)
+                this.$nextTick(function () {
+
+            }) 
         }
 
     }

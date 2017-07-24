@@ -393,7 +393,25 @@ export default {
        handleSelectionChange2(val){
            this.selectexeScene=val
        },
+     getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+    return currentdate;
+},
        runAll(){
+           var that=this
           let s=new String(this.selectexeScene[0].id)
           if(this.selectexeScene.length>1){
               
@@ -402,8 +420,10 @@ export default {
                
                }
           }
+         
           let m={
-              ids:s
+              ids:s,
+              time: that.getNowFormatDate()
           }
         axios.post('http://localhost:8081/myapp/exResults/add.do', m, {
                       headers: {
@@ -554,8 +574,8 @@ export default {
            this.testSuiteClick = testSuiteFocus     
            var variable1=this.testSuiteClick.TestSuiteData
            if (variable1 !== '') { 
-            if(this.testcasedata.length>1){
-              console.log("aaaaaaaa")
+            if(this.testcasedata.length>=1){
+              
               for(let  i=0;i<this.testcasedata.length;i++){
               
 
@@ -564,24 +584,26 @@ export default {
                
                 }
              }else{
-              console.log("bbbbbb")
+              
               this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
               
               
             }
            }else{
-              if(this.testcasedata.length>1){
-                   console.log("cccccccccc")
+              if(this.testcasedata.length>=1){
+                  
                  var s=new String(this.testcasedata[0].id)
+                
               for(let  i=1;i<this.testcasedata.length;i++){
               s=s.concat(",").concat(this.testcasedata[i].id)
 
-               this.testSuiteClick.TestSuiteData=s
-               console.log(this.testSuiteClick.TestSuiteData)
                
                 }
+                this.testSuiteClick.TestSuiteData=s
+               console.log(this.testSuiteClick.TestSuiteData)
+               
              }else{
-                  console.log("aaadddddddddddaaaaa")
+                 
               this.testSuiteClick.TestSuiteData=this.testcasedata.id.toString()
               console.log(this.testSuiteClick.TestSuiteData)
 
