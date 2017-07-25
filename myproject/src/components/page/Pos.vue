@@ -587,8 +587,8 @@ export default {
                 }
              }else{
               
-              this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
-              
+             // this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
+              this.testSuiteClick.TestSuiteData=''
               
             }
            }else{
@@ -606,8 +606,9 @@ export default {
                
              }else{
                  
-              this.testSuiteClick.TestSuiteData=this.testcasedata.id.toString()
-              console.log(this.testSuiteClick.TestSuiteData)
+              //this.testSuiteClick.TestSuiteData=this.testcasedata.id.toString()
+              //console.log(this.testSuiteClick.TestSuiteData)
+              this.testSuiteClick.TestSuiteData=''
 
             }
             
@@ -655,8 +656,12 @@ export default {
         },
         addselecttestcase(){
             
+            if(this.selectaddtest.length===0){
+                alert("没有勾选任一case，请返回勾选")
+            }else{
             this.testcasedata = this.selectaddtest
             this.fold = true
+            }
             
         },
         addList(testCase) {
