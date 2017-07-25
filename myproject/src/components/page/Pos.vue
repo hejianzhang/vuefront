@@ -75,8 +75,7 @@
     
                                     <template scope="scope">
                                         <el-button type="danger" size="small" @click="deltestdata11(scope.$index,scope.row)">删除</el-button>
-                                        <el-button type="primary" size="small" @click="runtestscene()">执行</el-button>
-                                        <el-button type="warning" size="small" @click="runtestscene()">执行详情</el-button>
+                                       
     
                                     </template>
     
@@ -85,7 +84,8 @@
     
                         </div>
                         <div class="totalDiv">
-                            <el-button type="success" size="small" min-width="30%" @click="runAll()">全部运行</el-button>
+                             <el-button type="warning" size="small" @click="runtestscene()">执行详情</el-button>
+                            <el-button type="success" size="small"  @click="runAll()">运行选择的</el-button>
                         </div>
                     </el-tab-pane>
                     <!-- <el-tab-pane label="测试结果">
@@ -391,6 +391,7 @@ export default {
        this.selectaddTestSuite = val
        },
        handleSelectionChange2(val){
+           console.log(val)
            this.selectexeScene=val
        },
      getNowFormatDate() {
@@ -411,7 +412,8 @@ export default {
     return currentdate;
 },
        runAll(){
-           var that=this
+          var that=this
+          console.log(this.selectexeScene)
           let s=new String(this.selectexeScene[0].id)
           if(this.selectexeScene.length>1){
               
