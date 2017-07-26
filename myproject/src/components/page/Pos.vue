@@ -577,7 +577,7 @@ export default {
            var variable1=this.testSuiteClick.TestSuiteData
            if (variable1 !== '') { 
             if(this.testcasedata.length>=1){
-              
+              console.log("aaaaaaaaaaaaaaaaaa")
               for(let  i=0;i<this.testcasedata.length;i++){
               
 
@@ -586,14 +586,14 @@ export default {
                
                 }
              }else{
+          
+             this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
               
-             // this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
-              this.testSuiteClick.TestSuiteData=''
               
             }
            }else{
               if(this.testcasedata.length>=1){
-                  
+                   console.log("cccccccccccccccccccccccccccc")
                  var s=new String(this.testcasedata[0].id)
                 
               for(let  i=1;i<this.testcasedata.length;i++){
@@ -605,10 +605,10 @@ export default {
                console.log(this.testSuiteClick.TestSuiteData)
                
              }else{
-                 
-              //this.testSuiteClick.TestSuiteData=this.testcasedata.id.toString()
-              //console.log(this.testSuiteClick.TestSuiteData)
-              this.testSuiteClick.TestSuiteData=''
+               
+              this.testSuiteClick.TestSuiteData=this.testcasedata.id.toString()
+              console.log(this.testSuiteClick.TestSuiteData)
+              
 
             }
             

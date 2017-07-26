@@ -9,19 +9,28 @@
 <el-collapse-item :title="value"  name="1">  
  <el-collapse v-for="(key,value) in key111" :key="value" accordion>
 <el-collapse-item :title="key[Object.keys(key)[0]].name"  name="1">
-    <div v-for="(item,index) in key[Object.keys(key)[0]].data">
-   
-    <el-collapse   accordion>
+    <!-- <div v-for="(item,index) in key[Object.keys(key)[0]].data"> -->
+     <div>
+     <el-table :data="key[Object.keys(key)[0]].data" border >
+                            <el-table-column prop="name" label="接口" size="small" width="240px"></el-table-column>
+                            
+                            <el-table-column prop="testdata"  label="结果" width="480px"></el-table-column>
+                            <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
+                           
+     </el-table>
+    <!-- <el-collapse   accordion>
+        <h1>{{item}}</h1>
   <el-collapse-item :title="item['name']" name="1">
+      
     <div  v-for="(key2,value2) in item['testdata']" :key="value2">
-
-        <el-tag  color="green" v-if="key2=== 'sucess'" type="success">{{value2}}:</el-tag>
-        <el-tag  color="red"v-else-if="key2=== 'failed'" type="danger">{{value2}}:</el-tag>
+        
+        <el-tag  color="green" v-if="key2=== 'true'" type="success">{{value2}}:</el-tag>
+        <el-tag  color="red"v-else-if="key2=== 'false'" type="danger">{{value2}}:</el-tag>
         <el-tag  v-else type="primary">{{value2}}:</el-tag>
         {{key2}}
      </div>
   </el-collapse-item>
-    </el-collapse>
+    </el-collapse> -->
   </div>
 
 </el-collapse-item>
@@ -43,6 +52,9 @@ export default {
         oldata:[],
         ss:[],
       };
+    },
+    computed:{
+
     },
     methods:{
         searchResults(input){
