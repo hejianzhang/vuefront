@@ -1,11 +1,10 @@
 <template>
     <div class="pos">
-        <el-row>
-            <el-col id="order-list" :span="12" class="pos-order">
+            <div class="order-list"  >
                 <el-tabs @tab-click="handleClick">
     
                     <el-tab-pane label="测试用例集合">
-                        <el-card height="200px" class="box-card">
+                        <!-- <el-card height="200px" width="100%" class="box-card">
                            <div slot="header" class="clearfix">
                                 <span style="line-height: 18px;">登陆信息</span>
                                 <el-button style="float: right;" type="warning" @click="fresh">刷新</el-button>
@@ -25,7 +24,7 @@
                             <div class='text item'>用户:
                                 <span class="userlogininfo">{{mydata1.userID}}</span>
                             </div>
-                            </el-card>
+                            </el-card> -->
                         
                         <div class="filter">
                             <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
@@ -46,6 +45,7 @@
                             <el-table-column type="index" width="80px"></el-table-column>
                             <el-table-column prop="id" label="序号" size="small" width="80px"></el-table-column>
                             <el-table-column prop="name" label="接口名称" width="240px"></el-table-column>
+                            <el-table-column prop="desc" label="描述" width="480px"></el-table-column>
                             <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
                             <el-table-column label="操作" width="320px">
                                 <template scope="scope">
@@ -63,7 +63,7 @@
                                 <el-table-column type="selection" width="50px"></el-table-column>
                                 <el-table-column  size="small" type="index" width="80"></el-table-column>
                                 <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
-                                <el-table-column prop="TestSuite" label="场景名称" width="160"></el-table-column>
+                                <el-table-column prop="TestSuite" label="场景名称" width="260"></el-table-column>
                                 <el-table-column label="执行进度" width="160">
                                     <template scope="scope">
                                         <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
@@ -84,22 +84,16 @@
     
                         </div>
                         <div class="totalDiv">
-                             <el-button type="warning" size="small" @click="runtestscene()">执行详情</el-button>
                             <el-button type="success" size="small"  @click="runAll()">运行选择的</el-button>
                         </div>
                     </el-tab-pane>
-                    <!-- <el-tab-pane label="测试结果">
-                            <el-progress :text-inside="true" :stroke-width="18" :percentage="0"></el-progress>
-                            <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
-                            <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
-                            <el-progress :text-inside="true" :stroke-width="18" :percentage="50" status="exception"></el-progress>
-                        </el-tab-pane> -->
+                     <el-tab-pane label="测试结果">
+                            <collapse></collapse>
+                        </el-tab-pane> 
                 </el-tabs>
-            </el-col>
-            <el-col id="order-list11111" :span="12" v-if="testProgress===true">
-                <collapse></collapse>
-            </el-col>
-            <el-col id="order-list" :span="12" v-show="showRight">
+            </div>
+
+            <div class="addtestList-wrapper"  v-show="showRight">
                 <div class="often-goods">
                     <div class="title">主键定位
                         
@@ -145,7 +139,7 @@
                 </div>
                 
             </el-col>
-        </el-row>
+        </div>
        
         <div>
            <div  class="newinterface" v-show="InterfaceFlag" >
@@ -177,10 +171,10 @@
                     <el-button type="warning" size="small" class="save" @click="quit()">退出</el-button>
                 </div>
                 <el-row>
-                    <el-col id="order-list" :span="12" class="pos-order">
+                    <div id="order-list"  class="pos-order">
                         <el-tabs>
-                            <!-- <!--  -->
-                            <el-card height="100px" class="box-card1s">
+                            <!-- <!--  
+                                 <el-card height="100px" class="box-card1s">
                            <div class='text item'>用例集:
                                 <span class="userlogininfo">{{testSuite.name}}</span>
                             </div>
@@ -191,19 +185,21 @@
                                 <span class="userlogininfo">{{mydata1.system}}</span>
                             </div>
                             </el-card>
+                            -->
+                           
                             <div class="title">
                                 <span class="suitesize">场景集合
                                      <el-button type="warning" size="small" @click="selectadd()">批量添加选择测试场景</el-button>
                                 </span>
                             </div>
                             <el-table :data="testSuite.data"  border  @selection-change="handleSelectionChange" >
-                                <el-table-column type="selection" width="40px">
+                                <el-table-column type="selection" width="80px">
                                     
                                 </el-table-column>
-                                <el-table-column type="index" width="40px"></el-table-column>
+                                <el-table-column type="index" width="80px"></el-table-column>
                                 <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
-                                <el-table-column prop="TestSuite" label="场景名称" width="120px"></el-table-column>
-                                <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" width="240px"></el-table-column>
+                                <el-table-column prop="TestSuite" label="场景名称" width="240px"></el-table-column>
+                                <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" width="500px"></el-table-column>
                                 <el-table-column label="操作" width="330px">
                                     <template scope="scope">
                                         <el-button type="danger" size="small" @click="addtestscene(scope.row)">组合</el-button>
@@ -218,9 +214,9 @@
                             </div>
                             <el-table :data="testSuiteDetails" border>
                                 <el-table-column type="index" width="60px"></el-table-column>
-                                <el-table-column prop="id" label="序号" sortable size="small" width="60px"></el-table-column>
-                                <el-table-column prop="name" label="接口名称" sortable width="200px"></el-table-column>
-                                <el-table-column prop="desc" size="small" label="场景描述" width="240px"></el-table-column>
+                                <el-table-column prop="id" label="序号" sortable size="small" width="120px"></el-table-column>
+                                <el-table-column prop="name" label="接口名称" sortable width="300px"></el-table-column>
+                                <el-table-column prop="desc" size="small" label="场景描述" width="360px"></el-table-column>
                                 <el-table-column label="操作" width="330px">
                                     <template scope="scope">
                                         <el-button type="success" size="small" @click="deltestcase(scope.$index, scope.row)">删除</el-button>
@@ -230,12 +226,12 @@
                             </el-table>
     
                         </el-tabs>
-                    </el-col>
+                    </div>
                      
-                    <el-col id="order-list" :span="12" v-show="show2Right">
+                    <div class="addtestList-wrapper"  v-show="show2Right">
                         <div class="often-goods">
                             <div class="title">主键定位
-                               
+                               <el-button type="warning" size="small" class="save" @click="close">关闭</el-button>
                             </div>
                             <div class="often-goods-list">
                                 <ul>
@@ -275,7 +271,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </el-col>
+                    </div>
                 </el-row>
             </div>
         </div>
@@ -384,6 +380,9 @@ export default {
         document.getElementById('order-list').style.height = orderHeight + 'px'
     },
     methods: {
+       close(){
+           this.show2Right=!this.show2Right
+       },
        handleSelectionChange1(val){
            this.selectaddtest=val
        },
@@ -545,7 +544,7 @@ export default {
         },
        
         save() {
-            
+            this.showRight=!this.showRight
             this.interface1.id=this.oftenGoods.id
             this.interface1.casename=this.oftenGoods.name
             this.interface1.casedesc=this.oftenGoods.desc
@@ -707,7 +706,7 @@ export default {
 
         },
         showTestDetail1(testCase) {
-            this.show2Right = true
+            this.show2Right = !this.show2Right
             this.often2Goods = testCase
 
 

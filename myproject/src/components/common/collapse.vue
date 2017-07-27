@@ -1,6 +1,5 @@
 <template>
 <div class="testRunResults">
-<h1 class="title1">测试结果</h1>
 <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口"> </el-input>
 <el-button class="searchbutton" size="small" type="success" @click="searchResults(input)">搜索</el-button>
 <el-button class="searchbutton" size="small" type="primary" @click="refresh">刷新</el-button>

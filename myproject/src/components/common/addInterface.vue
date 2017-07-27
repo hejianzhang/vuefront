@@ -17,8 +17,6 @@
                             
                             <el-form-item>
                             <el-button type="primary" @click="submitForm()">提交</el-button>
-                            <el-button @click="addDomain">新增域名</el-button>
-                            <el-button @click="resetForm('interface')">重置</el-button>
                             </el-form-item>
                         </el-form>
                         
