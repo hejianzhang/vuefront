@@ -1,150 +1,150 @@
 <template>
     <div class="pos">
-            <div class="order-list"  >
-                <el-tabs @tab-click="handleClick">
+        <div class="order-list">
+            <el-tabs @tab-click="handleClick">
     
-                    <el-tab-pane label="测试用例集合">
-                        <!-- <el-card height="200px" width="100%" class="box-card">
-                           <div slot="header" class="clearfix">
-                                <span style="line-height: 18px;">登陆信息</span>
-                                <el-button style="float: right;" type="warning" @click="fresh">刷新</el-button>
-                           </div>
-                           <div class='text item'>brokerId:
-                                <span class="userlogininfo">{{mydata1.brokerID}}</span>
-                            </div>
-                             <div class='text item'>密码:
-                                <span class="userlogininfo">{{mydata1.password}}</span>
-                            </div>
-                             <div class='text item'>spi:
-                                <span class="userlogininfo">{{mydata1.spi}}</span>
-                            </div>
-                             <div class='text item'>系统:
-                                <span class="userlogininfo">{{mydata1.system}}</span>
-                            </div>
-                            <div class='text item'>用户:
-                                <span class="userlogininfo">{{mydata1.userID}}</span>
-                            </div>
-                            </el-card> -->
-                        
-                        <div class="filter">
-                            <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
-                            </el-input>
-                            <el-button class="searchbutton" size="small" type="success" @click="search(input)">搜索
-                            </el-button>
-                            <el-button class="searchbutton" size="small" type="danger" @click="updatedate()">更新
-                            </el-button>
-                            <el-button class="searchbutton" size="small" type="warning" @click="addInterfaceFlag()">定义新接口
-                            </el-button>
-                             <el-button class="searchbutton" size="small" type="primary" @click="addselecttestcase()">批量添加选择用例
-                            </el-button>
-                        </div>
-                        
+                <el-tab-pane label="测试用例集合">
+                    <!-- <el-card height="200px" width="100%" class="box-card">
+                               <div slot="header" class="clearfix">
+                                    <span style="line-height: 18px;">登陆信息</span>
+                                    <el-button style="float: right;" type="warning" @click="fresh">刷新</el-button>
+                               </div>
+                               <div class='text item'>brokerId:
+                                    <span class="userlogininfo">{{mydata1.brokerID}}</span>
+                                </div>
+                                 <div class='text item'>密码:
+                                    <span class="userlogininfo">{{mydata1.password}}</span>
+                                </div>
+                                 <div class='text item'>spi:
+                                    <span class="userlogininfo">{{mydata1.spi}}</span>
+                                </div>
+                                 <div class='text item'>系统:
+                                    <span class="userlogininfo">{{mydata1.system}}</span>
+                                </div>
+                                <div class='text item'>用户:
+                                    <span class="userlogininfo">{{mydata1.userID}}</span>
+                                </div>
+                                </el-card> -->
     
-                        <el-table :data="mydata1.testdata" border  @selection-change="handleSelectionChange1">
+                    <div class="filter">
+                        <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
+                        </el-input>
+                        <el-button class="searchbutton" size="small" type="success" @click="search(input)">搜索
+                        </el-button>
+                        <el-button class="searchbutton" size="small" type="danger" @click="updatedate()">更新
+                        </el-button>
+                        <el-button class="searchbutton" size="small" type="warning" @click="addInterfaceFlag()">定义新接口
+                        </el-button>
+                        <el-button class="searchbutton" size="small" type="primary" @click="addselecttestcase()">批量添加选择用例
+                        </el-button>
+                    </div>
+    
+                    <el-table :data="mydata1.testdata" border @selection-change="handleSelectionChange1">
+                        <el-table-column type="selection" width="50px"></el-table-column>
+                        <el-table-column type="index" width="80px"></el-table-column>
+                        <el-table-column prop="id" label="序号" size="small" width="80px"></el-table-column>
+                        <el-table-column prop="name" label="接口名称" width="240px"></el-table-column>
+                        <el-table-column prop="desc" label="描述" width="480px"></el-table-column>
+                        <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
+                        <el-table-column label="操作" width="320px">
+                            <template scope="scope">
+                                <el-button type="danger" size="small" @click="deltestdata(scope.$index, scope.row)">删除</el-button>
+                                <el-button type="primary" size="small" @click="addList(scope.row)">增加</el-button>
+                                <el-button type="success" size="small" @click="showTestDetail(scope.row)">展示</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+    
+                <el-tab-pane label="测试场景">
+                    <div class="hello">
+                        <el-table :data="testscene" border @selection-change="handleSelectionChange2">
                             <el-table-column type="selection" width="50px"></el-table-column>
-                            <el-table-column type="index" width="80px"></el-table-column>
-                            <el-table-column prop="id" label="序号" size="small" width="80px"></el-table-column>
-                            <el-table-column prop="name" label="接口名称" width="240px"></el-table-column>
-                            <el-table-column prop="desc" label="描述" width="480px"></el-table-column>
-                            <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
-                            <el-table-column label="操作" width="320px">
+                            <el-table-column size="small" type="index" width="80"></el-table-column>
+                            <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
+                            <el-table-column prop="TestSuite" label="场景名称" width="260"></el-table-column>
+                            <el-table-column prop="TestSuiteDesc" label="场景描述" width="260"></el-table-column>
+                            <el-table-column prop="TestSuiteData" label="用例ID" width="260"></el-table-column>
+                            <!-- <el-table-column label="执行进度" width="160">
                                 <template scope="scope">
-                                    <el-button type="danger" size="small" @click="deltestdata(scope.$index, scope.row)">删除</el-button>
-                                    <el-button type="primary" size="small" @click="addList(scope.row)">增加</el-button>
-                                    <el-button type="success" size="small" @click="showTestDetail(scope.row)">展示</el-button>
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+    
                                 </template>
+    
+                            </el-table-column> -->
+                            <el-table-column label="操作" width="400">
+    
+                                <template scope="scope">
+                                    <el-button type="danger" size="small" @click="deltestdata11(scope.$index,scope.row)">删除</el-button>
+    
+                                </template>
+    
                             </el-table-column>
                         </el-table>
-                    </el-tab-pane>
-                    
-                    <el-tab-pane label="测试场景">
-                        <div class="hello">
-                            <el-table :data="testscene" border @selection-change="handleSelectionChange2">
-                                <el-table-column type="selection" width="50px"></el-table-column>
-                                <el-table-column  size="small" type="index" width="80"></el-table-column>
-                                <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
-                                <el-table-column prop="TestSuite" label="场景名称" width="260"></el-table-column>
-                                <el-table-column label="执行进度" width="160">
-                                    <template scope="scope">
-                                        <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
     
-                                    </template>
-    
-                                </el-table-column>
-                                <el-table-column label="操作" width="400">
-    
-                                    <template scope="scope">
-                                        <el-button type="danger" size="small" @click="deltestdata11(scope.$index,scope.row)">删除</el-button>
-                                       
-    
-                                    </template>
-    
-                                </el-table-column>
-                            </el-table>
-    
-                        </div>
-                        <div class="totalDiv">
-                            <el-button type="success" size="small"  @click="runAll()">运行选择的</el-button>
-                        </div>
-                    </el-tab-pane>
-                     <el-tab-pane label="测试结果">
-                            <collapse></collapse>
-                        </el-tab-pane> 
-                </el-tabs>
-            </div>
-
-            <div class="addtestList-wrapper"  v-show="showRight">
-                <div class="often-goods">
-                    <div class="title">主键定位
-                        
-                        <el-button type="warning" size="small" class="save" @click="save">保存当前</el-button>
                     </div>
-                    <div class="often-goods-list">
-                        <ul>
-                            <li>
-                                <i>id: </i>
-                                <input class="o-price" disabled=true v-model="oftenGoods.id" />
-                            </li>
-                            <li>
-                                <i>name: </i>
-                                <input class="o-price" disabled=true v-model="oftenGoods.name" />
-                            </li>
-                            <li>
-                                <i>desc: </i>
-                                <input class="o-price " v-model="oftenGoods.desc" />
-                            </li>
-                        </ul>
+                    <div class="totalDiv">
+                        <el-button type="success" size="small" @click="runAll()">运行选择的</el-button>
                     </div>
-                    <div class="title">输入值</div>
-                    <div class="often-goods-list">
-                        <ul>
-                            <li v-for="(key,value) in oftenGoods.input">
-                                <i>{{value}}:
-                                    <input class="o-price" v-model="oftenGoods.input[value]
-                                                    "></input>
-                                </i>
+                </el-tab-pane>
+                <el-tab-pane label="测试结果">
+                    <collapse></collapse>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
     
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="title">输出结果</div>
-                    <div class="often-goods-list">
-                        <ul>
-                            <li v-for="(key,value) in oftenGoods.expectResult">
-                                <i>{{value}}:
-                                    <input class="o-price" v-model="oftenGoods.expectResult[value]" /> </i>
-                            </li>
-                        </ul>
-                    </div>
+        <div class="addtestList-wrapper" v-show="showRight">
+            <div class="often-goods">
+                <div class="title">主键定位
+    
+                    <el-button type="warning" size="small" class="save" @click="save">保存当前</el-button>
                 </div>
-                
+                <div class="often-goods-list">
+                    <ul>
+                        <li>
+                            <i>id: </i>
+                            <input class="o-price" disabled=true v-model="oftenGoods.id" />
+                        </li>
+                        <li>
+                            <i>name: </i>
+                            <input class="o-price" disabled=true v-model="oftenGoods.name" />
+                        </li>
+                        <li>
+                            <i>desc: </i>
+                            <input class="o-price " v-model="oftenGoods.desc" />
+                        </li>
+                    </ul>
+                </div>
+                <div class="title">输入值</div>
+                <div class="often-goods-list">
+                    <ul>
+                        <li v-for="(key,value) in oftenGoods.input">
+                            <i>{{value}}:
+                                <input class="o-price" v-model="oftenGoods.input[value]
+                                                        "></input>
+                            </i>
+    
+                        </li>
+                    </ul>
+                </div>
+                <div class="title">输出结果</div>
+                <div class="often-goods-list">
+                    <ul>
+                        <li v-for="(key,value) in oftenGoods.expectResult">
+                            <i>{{value}}:
+                                <input class="o-price" v-model="oftenGoods.expectResult[value]" /> </i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
             </el-col>
         </div>
-       
+    
         <div>
-           <div  class="newinterface" v-show="InterfaceFlag" >
-            <addInterface :testdata="mydata1.testdata"></addInterface>
-           </div>
+            <div class="newinterface" v-show="InterfaceFlag">
+                <addInterface :testdata="mydata1.testdata"></addInterface>
+            </div>
             <div class="addtestList-wrapper" v-show="fold">
                 <div class="title">
                     <span class="suitesize">添加到场景</span>
@@ -171,30 +171,30 @@
                     <el-button type="warning" size="small" class="save" @click="quit()">退出</el-button>
                 </div>
                 <el-row>
-                    <div id="order-list"  class="pos-order">
+                    <div id="order-list" class="pos-order">
                         <el-tabs>
                             <!-- <!--  
-                                 <el-card height="100px" class="box-card1s">
-                           <div class='text item'>用例集:
-                                <span class="userlogininfo">{{testSuite.name}}</span>
-                            </div>
-                             <div class='text item'>回调函数:
-                                <span class="userlogininfo">{{mydata1.spi}}</span>
-                            </div>
-                             <div class='text item'>系统:
-                                <span class="userlogininfo">{{mydata1.system}}</span>
-                            </div>
-                            </el-card>
-                            -->
-                           
+                                     <el-card height="100px" class="box-card1s">
+                               <div class='text item'>用例集:
+                                    <span class="userlogininfo">{{testSuite.name}}</span>
+                                </div>
+                                 <div class='text item'>回调函数:
+                                    <span class="userlogininfo">{{mydata1.spi}}</span>
+                                </div>
+                                 <div class='text item'>系统:
+                                    <span class="userlogininfo">{{mydata1.system}}</span>
+                                </div>
+                                </el-card>
+                                -->
+    
                             <div class="title">
                                 <span class="suitesize">场景集合
-                                     <el-button type="warning" size="small" @click="selectadd()">批量添加选择测试场景</el-button>
+                                    <el-button type="warning" size="small" @click="selectadd()">批量添加选择测试场景</el-button>
                                 </span>
                             </div>
-                            <el-table :data="testSuite.data"  border  @selection-change="handleSelectionChange" >
+                            <el-table :data="testSuite.data" border @selection-change="handleSelectionChange">
                                 <el-table-column type="selection" width="80px">
-                                    
+    
                                 </el-table-column>
                                 <el-table-column type="index" width="80px"></el-table-column>
                                 <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
@@ -204,7 +204,7 @@
                                     <template scope="scope">
                                         <el-button type="danger" size="small" @click="addtestscene(scope.row)">组合</el-button>
                                         <el-button type="primary" size="small" @click="deletescenedata(scope.$index, scope.row)">删除</el-button>
-                                         <el-button type="warning" size="small" @click="addSuiteList(scope.row)">增加</el-button>
+                                        <el-button type="warning" size="small" @click="addSuiteList(scope.row)">增加</el-button>
                                         <el-button type="success" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
                                     </template>
                                 </el-table-column>
@@ -227,11 +227,11 @@
     
                         </el-tabs>
                     </div>
-                     
-                    <div class="addtestList-wrapper"  v-show="show2Right">
+    
+                    <div class="addtestList-wrapper" v-show="show2Right">
                         <div class="often-goods">
                             <div class="title">主键定位
-                               <el-button type="warning" size="small" class="save" @click="close">关闭</el-button>
+                                <el-button type="warning" size="small" class="save" @click="close">关闭</el-button>
                             </div>
                             <div class="often-goods-list">
                                 <ul>
@@ -255,7 +255,7 @@
                                     <li v-for="(key,value) in often2Goods.input">
                                         <i>{{value}}:
                                             <input class="o-price" v-model="often2Goods.input[value]
-                                                    "></input>
+                                                        "></input>
                                         </i>
     
                                     </li>
@@ -288,9 +288,9 @@ export default {
         return {
             selectexeScene: [],
             selectaddtest: [],
-            selectaddTestSuite:[],
+            selectaddTestSuite: [],
             InterfaceFlag: false,
-            dynamicValidateForm: {domains: [{ value: ''}],email: ''},
+            dynamicValidateForm: { domains: [{ value: '' }], email: '' },
             testProgress: false,
             dialogFormVisible: false,
             dialogTableVisible: false,
@@ -310,17 +310,17 @@ export default {
             testSuiteClick: [],
             testSuiteDetails: [],
             testSuite:
-            { },
+            {},
             testcasedata: [],
             fold: false,
             interface1: {
-          id:'',
-          casename:'',
-          casedesc:'',
-          caseinput:'',
-          caseexpectResult:''
+                id: '',
+                casename: '',
+                casedesc: '',
+                caseinput: '',
+                caseexpectResult: ''
 
-        },
+            },
             mydata1: {},
             tableData: [],
             totalMoney: 0,
@@ -332,14 +332,14 @@ export default {
             oftenGoods: [],
             often2Goods: [],
             scene: {
-              id:'',
-              TestSuite:'',
-              TestSuiteDesc:'',
-              TestSuiteData:'',
-              },
+                id: '',
+                TestSuite: '',
+                TestSuiteDesc: '',
+                TestSuiteData: '',
+            },
 
         }
-         
+
     },
     created() {
         // axios.get('http://jspang.com/DemoApi/oftenGoods.php').then(reponse => {
@@ -350,171 +350,177 @@ export default {
         //         alert('网络错误')
         //     })
 
-       axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-           this.mydata1 = response.data
-           
-       }),
-       axios.get('http://localhost:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-           this.testSuite = response.data
-           
-       }),
+        axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            this.mydata1 = response.data
+
+        }),
+            axios.get('http://localhost:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+                this.testSuite = response.data
+
+            }),
 
 
-       //     .catch(error => {
-       //         console.log(error)
-      //          alert('网络错误')
-      //      })
-        axios.get('http://jspang.com/DemoApi/typeGoods.php').then(reponse => {
-            this.type0Goods = reponse.data[0]
-            this.type1Goods = reponse.data[1]
-            this.type2Goods = reponse.data[2]
-            this.type3Goods = reponse.data[3]
-        })
-            .catch(error => {
-                console.log(error)
-                alert('网络错误')
+            //     .catch(error => {
+            //         console.log(error)
+            //          alert('网络错误')
+            //      })
+            axios.get('http://jspang.com/DemoApi/typeGoods.php').then(reponse => {
+                this.type0Goods = reponse.data[0]
+                this.type1Goods = reponse.data[1]
+                this.type2Goods = reponse.data[2]
+                this.type3Goods = reponse.data[3]
             })
+                .catch(error => {
+                    console.log(error)
+                    alert('网络错误')
+                })
     },
     mounted: function () {
         var orderHeight = document.body.clientHeight
         document.getElementById('order-list').style.height = orderHeight + 'px'
     },
     methods: {
-       close(){
-           this.show2Right=!this.show2Right
-       },
-       handleSelectionChange1(val){
-           this.selectaddtest=val
-       },
-       handleSelectionChange(val) {
-       this.selectaddTestSuite = val
-       },
-       handleSelectionChange2(val){
-           console.log(val)
-           this.selectexeScene=val
-       },
-     getNowFormatDate() {
-    var date = new Date();
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + " " + date.getHours() + seperator2 + date.getMinutes()
-            + seperator2 + date.getSeconds();
-    return currentdate;
-},
-       runAll(){
-          var that=this
-          console.log(this.selectexeScene)
-          let s=new String(this.selectexeScene[0].id)
-          if(this.selectexeScene.length>1){
-              
-          for(var i=1;i<this.selectexeScene.length;i++){
-               s=s.concat(",").concat(this.selectexeScene[i].id)
-               
-               }
-          }
-         
-          let m={
-              ids:s,
-              time: that.getNowFormatDate()
-          }
-        axios.post('http://localhost:8081/myapp/exResults/add.do', m, {
-                      headers: {
-                           'X-Requested-With': 'XMLHttpRequest',
-                           
-                      }
-                  })
-                  .then(function (response) {
-                    
-                     })
-                  .catch(function (error) {
-                    console.log(error);
-                  })
-            
+        close() {
+            this.show2Right = !this.show2Right
+        },
+        handleSelectionChange1(val) {
+            this.selectaddtest = val
+        },
+        handleSelectionChange(val) {
+            this.selectaddTestSuite = val
+        },
+        handleSelectionChange2(val) {
+            console.log(val)
+            this.selectexeScene = val
+        },
+        getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+            return currentdate;
+        },
+        runprocess(){
 
-        this.$nextTick(function () {
+        },
+        runAll() {
+            setInterval(() => {
+                console.log("aaaa");
+            }, 10000)
+            var that = this
+            console.log(this.selectexeScene)
+            let s = new String(this.selectexeScene[0].id)
+            if (this.selectexeScene.length > 1) {
 
+                for (var i = 1; i < this.selectexeScene.length; i++) {
+                    s = s.concat(",").concat(this.selectexeScene[i].id)
+
+                }
+            }
+
+            let m = {
+                ids: s,
+                time: that.getNowFormatDate()
+            }
+            axios.post('http://localhost:8081/myapp/exResults/add.do', m, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+
+                }
             })
-       },
-       selectadd(){
-          for(var i=0;i<this.selectaddTestSuite.length;i++){
-               this.testscene.push(this.selectaddTestSuite[i])
-          }
-         
+                .then(function (response) {
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+
             this.$nextTick(function () {
 
             })
-       },
-       addInterfaceFlag(){
-           this.InterfaceFlag=!this.InterfaceFlag
-           this.$nextTick(function () {
-           })
-       },
-       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      removeDomain(item) {
-        var index = this.dynamicValidateForm.domains.indexOf(item)
-        if (index !== -1) {
-          this.dynamicValidateForm.domains.splice(index, 1)
-        }
-      },
-      addDomain() {
-        this.dynamicValidateForm.domains.push({
-          value: '',
-          key: Date.now()
-        });
-      },
-       handleClick(tab, event) {
-       this.testProgress=false
-       this.showRight=false
-       this.InterfaceFlag=false
-      },
+        },
+        selectadd() {
+            for (var i = 0; i < this.selectaddTestSuite.length; i++) {
+                this.testscene.push(this.selectaddTestSuite[i])
+            }
+
+            this.$nextTick(function () {
+
+            })
+        },
+        addInterfaceFlag() {
+            this.InterfaceFlag = !this.InterfaceFlag
+            this.$nextTick(function () {
+            })
+        },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    alert('submit!');
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
+        removeDomain(item) {
+            var index = this.dynamicValidateForm.domains.indexOf(item)
+            if (index !== -1) {
+                this.dynamicValidateForm.domains.splice(index, 1)
+            }
+        },
+        addDomain() {
+            this.dynamicValidateForm.domains.push({
+                value: '',
+                key: Date.now()
+            });
+        },
+        handleClick(tab, event) {
+            this.testProgress = false
+            this.showRight = false
+            this.InterfaceFlag = false
+        },
         runtestscene() {
-           this.showRight=false
-           this.show2Right=false
+            this.showRight = false
+            this.show2Right = false
             this.testProgress = true
             this.$nextTick(function () {
                 console.log("aaaaaaaaaaaaa")
             })
         },
         addnewTestsuite() {
-            var that=this
-            this.scene.id="",
-            this.scene.TestSuite=this.form.TestSuite
-            this.scene.TestSuiteDesc=this.form.TestSuiteDesc
-            this.scene.TestSuiteData=this.form.TestSuiteData
+            var that = this
+            this.scene.id = "",
+                this.scene.TestSuite = this.form.TestSuite
+            this.scene.TestSuiteDesc = this.form.TestSuiteDesc
+            this.scene.TestSuiteData = this.form.TestSuiteData
             // this.testSuite.data.push(testSuite)
             axios.post('http://localhost:8081/myapp/testscene/add.do', this.scene, {
-                      headers: {
-                           'X-Requested-With': 'XMLHttpRequest',
-                           
-                      }
-                  })
-                  .then(function (response) {
-                   that.updatescene()
-                  })
-                  .catch(function (error) {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+
+                }
+            })
+                .then(function (response) {
+                    that.updatescene()
+                })
+                .catch(function (error) {
                     console.log(error);
-                  });
+                });
             this.$nextTick(function () {
                 //  console.log(this.$el.textContent.olddata)
 
@@ -528,104 +534,104 @@ export default {
 
         },
         showTestSuiteDetail(testSuite) {
-            this.testSuiteClick=testSuite
-            let s={
-                ids:testSuite.TestSuiteData
+            this.testSuiteClick = testSuite
+            let s = {
+                ids: testSuite.TestSuiteData
             }
-            
-            axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s,{ headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-            
-            this.testSuiteDetails = response.data
-            
 
-           
-       })
-           
-        },
-       
-        save() {
-            this.showRight=!this.showRight
-            this.interface1.id=this.oftenGoods.id
-            this.interface1.casename=this.oftenGoods.name
-            this.interface1.casedesc=this.oftenGoods.desc
-            this.interface1.caseinput=this.oftenGoods.input
-            this.interface1.caseexpectResult=this.oftenGoods.expectResult
-            axios.post('http://localhost:8081/myapp/mvc/update.do', this.interface1, {
-                      headers: {
-                           'X-Requested-With': 'XMLHttpRequest',
-                           
-                      }
-                  })
-                  .then(function (response) {
-                    console.log(response);
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
-       this.$nextTick(function () {
-               
+            axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+
+                this.testSuiteDetails = response.data
+
+
+
             })
-           
+
+        },
+
+        save() {
+            this.showRight = !this.showRight
+            this.interface1.id = this.oftenGoods.id
+            this.interface1.casename = this.oftenGoods.name
+            this.interface1.casedesc = this.oftenGoods.desc
+            this.interface1.caseinput = this.oftenGoods.input
+            this.interface1.caseexpectResult = this.oftenGoods.expectResult
+            axios.post('http://localhost:8081/myapp/mvc/update.do', this.interface1, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            this.$nextTick(function () {
+
+            })
+
 
         },
 
         addSuiteList(testSuiteFocus) {
-           
-           var that=this
-           this.testSuiteClick = testSuiteFocus     
-           var variable1=this.testSuiteClick.TestSuiteData
-           if (variable1 !== '') { 
-            if(this.testcasedata.length>=1){
-              console.log("aaaaaaaaaaaaaaaaaa")
-              for(let  i=0;i<this.testcasedata.length;i++){
-              
 
-               this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata[i].id)
-         
-               
+            var that = this
+            this.testSuiteClick = testSuiteFocus
+            var variable1 = this.testSuiteClick.TestSuiteData
+            if (variable1 !== '') {
+                if (this.testcasedata.length >= 1) {
+                    console.log("aaaaaaaaaaaaaaaaaa")
+                    for (let i = 0; i < this.testcasedata.length; i++) {
+
+
+                        this.testSuiteClick.TestSuiteData = this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata[i].id)
+
+
+                    }
+                } else {
+
+                    this.testSuiteClick.TestSuiteData = this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
+
+
                 }
-             }else{
-          
-             this.testSuiteClick.TestSuiteData=this.testSuiteClick.TestSuiteData.concat(",").concat(this.testcasedata.id)
-              
-              
-            }
-           }else{
-              if(this.testcasedata.length>=1){
-                   console.log("cccccccccccccccccccccccccccc")
-                 var s=new String(this.testcasedata[0].id)
-                
-              for(let  i=1;i<this.testcasedata.length;i++){
-              s=s.concat(",").concat(this.testcasedata[i].id)
+            } else {
+                if (this.testcasedata.length >= 1) {
+                    console.log("cccccccccccccccccccccccccccc")
+                    var s = new String(this.testcasedata[0].id)
 
-               
+                    for (let i = 1; i < this.testcasedata.length; i++) {
+                        s = s.concat(",").concat(this.testcasedata[i].id)
+
+
+                    }
+                    this.testSuiteClick.TestSuiteData = s
+                    console.log(this.testSuiteClick.TestSuiteData)
+
+                } else {
+
+                    this.testSuiteClick.TestSuiteData = this.testcasedata.id.toString()
+                    console.log(this.testSuiteClick.TestSuiteData)
+
+
                 }
-                this.testSuiteClick.TestSuiteData=s
-               console.log(this.testSuiteClick.TestSuiteData)
-               
-             }else{
-               
-              this.testSuiteClick.TestSuiteData=this.testcasedata.id.toString()
-              console.log(this.testSuiteClick.TestSuiteData)
-              
 
             }
-            
-        }
-          
-           axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
-                      headers: {
-                           'X-Requested-With': 'XMLHttpRequest',
-                           
-                      }
-                  })
-                  .then(function (response) {
+
+            axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+
+                }
+            })
+                .then(function (response) {
                     console.log(response);
                     that.showTestSuiteDetail(testSuiteFocus)
-                  })
-                  .catch(function (error) {
+                })
+                .catch(function (error) {
                     console.log(error);
-                  });
+                });
             this.$nextTick(function () {
                 //  console.log(this.$el.textContent.olddata)
 
@@ -641,42 +647,42 @@ export default {
             this.mydata1 = JSON.parse(JSON.stringify(this.olddata))
             this.oftenGoods = JSON.parse(JSON.stringify(this.olddata.testdata[this.oftenGoods.id]))
             this.$nextTick(function () {
-                
+
             })
 
         },
         quit() {
             this.fold = false
-            this.show2Right=false
-              this.$nextTick(function () {
-                
+            this.show2Right = false
+            this.$nextTick(function () {
+
             })
 
         },
-        addselecttestcase(){
-            
-            if(this.selectaddtest.length===0){
+        addselecttestcase() {
+
+            if (this.selectaddtest.length === 0) {
                 alert("没有勾选任一case，请返回勾选")
-            }else{
-            this.testcasedata = this.selectaddtest
-            this.fold = true
+            } else {
+                this.testcasedata = this.selectaddtest
+                this.fold = true
             }
-            
+
         },
         addList(testCase) {
-             
+
             this.testcasedata = testCase
             this.fold = true
 
         },
         updatedate() {
-           axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-           this.mydata1 = response.data
-           
-       }),
-            this.$nextTick(function () {
+            axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+                this.mydata1 = response.data
 
-            })
+            }),
+                this.$nextTick(function () {
+
+                })
         },
         addOrderList(goods) {
             this.totalMoney = 0
@@ -740,61 +746,61 @@ export default {
             })
 
         },
-        updatescene(){
+        updatescene() {
             axios.get('http://localhost:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-           this.testSuite = response.data
-           
-       }),
-          this.$nextTick(function () {
+                this.testSuite = response.data
 
-            })
+            }),
+                this.$nextTick(function () {
+
+                })
         },
-        deletescenedata(index, testscene){
-            var that=this 
+        deletescenedata(index, testscene) {
+            var that = this
             axios.post('http://localhost:8081/myapp/testscene/delete.do', testscene.id, {
-                      headers: {
-                           'X-Requested-With': 'XMLHttpRequest',
-                           
-                      }
-                  })
-                  .then(function (response) {
-                    console.log(this);
-                     that.updatescene()
-                     let s={
-                ids:"0"
-            }
-            
-            axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s,{ headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
-            
-            that.testSuiteDetails = response.data
-            
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
 
-           
-       })
-                     })
-                  .catch(function (error) {
+                }
+            })
+                .then(function (response) {
+                    console.log(this);
+                    that.updatescene()
+                    let s = {
+                        ids: "0"
+                    }
+
+                    axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+
+                        that.testSuiteDetails = response.data
+
+
+
+                    })
+                })
+                .catch(function (error) {
                     console.log(error);
-                  })
-                   this.$nextTick(function () {
-               
+                })
+            this.$nextTick(function () {
+
             })
         },
         deltestdata(index, testcase) {
-            var that=this
+            var that = this
             axios.post('http://localhost:8081/myapp/mvc/delete.do', testcase.id, {
-                      headers: {
-                           'X-Requested-With': 'XMLHttpRequest',
-                           
-                      }
-                  })
-                  .then(function (response) {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+
+                }
+            })
+                .then(function (response) {
                     console.log(this);
-                     that.updatedate()
-                     })
-                  .catch(function (error) {
+                    that.updatedate()
+                })
+                .catch(function (error) {
                     console.log(error);
-                  })
-            
+                })
+
 
         },
         addtestscene(testsuite) {
@@ -805,29 +811,29 @@ export default {
 
         },
         deltestcase(index, testcase) {
-            var that=this
-           console.log(this.testSuiteClick.TestSuiteData)
-           var ss=this.testSuiteClick.TestSuiteData.split(",")
-           ss.splice(index,1)
-           this.testSuiteClick.TestSuiteData=ss.toString()
-           axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
-                      headers: {
-                           'X-Requested-With': 'XMLHttpRequest',
-                           
-                      }
-                  })
-                  .then(function (response) {
+            var that = this
+            console.log(this.testSuiteClick.TestSuiteData)
+            var ss = this.testSuiteClick.TestSuiteData.split(",")
+            ss.splice(index, 1)
+            this.testSuiteClick.TestSuiteData = ss.toString()
+            axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+
+                }
+            })
+                .then(function (response) {
                     console.log(response);
                     that.showTestSuiteDetail(that.testSuiteClick)
-                  })
-                  .catch(function (error) {
+                })
+                .catch(function (error) {
                     console.log(error);
-                  });
+                });
             this.$nextTick(function () {
-               
+
             })
             console.log(this.testSuiteDetails)
-            
+
             if (this.testSuiteDetails.length === 0) {
                 this.show2Right = false
             }
@@ -849,47 +855,52 @@ export default {
         }
     },
     components: {
-       collapse,
-       addInterface
+        collapse,
+        addInterface
     }
 }
 </script>
 <style>
 .text {
     font-size: 14px;
-  }
-  .el-card__header {
+}
+
+.el-card__header {
     padding: 5px 10px;
     border-bottom: 1px solid #d1dbe5;
     box-sizing: border-box;
 }
+
 .el-card__body {
     padding: 5px;
 }
+
 .item {
     padding: 5px 0;
-  }
+}
 
 .clearfix:before,
 .clearfix:after {
-      display: table;
-      content: "";
-  }
+    display: table;
+    content: "";
+}
+
 .clearfix:after {
-      clear: both
-  }
+    clear: both
+}
 
 .box-card {
     height: 200px;
     width: 700px;
-  }
+}
+
 .box-card1 {
     height: 100px;
     width: 700px;
-  }
+}
+
 .pos-order {
     background-color: #F9FAFC;
-    
 }
 
 .div-btn {
@@ -955,6 +966,7 @@ export default {
     position: absolute;
     right: 50px;
 }
+
 
 /* .el-table::after{
      content:"."; display:block; height:0; visibility:hidden; clear:both; 
