@@ -4,8 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
+import echarts from 'echarts'
 import 'element-ui/lib/theme-default/index.css'
-
+Vue.prototype.$echarts = echarts 
 Vue.use(ElementUI)
 /* eslint-disable no-new */
 new Vue({

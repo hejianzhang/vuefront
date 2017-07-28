@@ -899,7 +899,7 @@ export default {
 
 .title {
     height: 20px;
-    border-bottom: 5px solid #5599FF;
+    border-bottom: 1px solid #5599FF;
     background-color: #F9FAFC;
     padding: 10px;
 }
