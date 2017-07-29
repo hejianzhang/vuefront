@@ -408,16 +408,13 @@ export default {
             }
             var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
                 + " " + date.getHours() + seperator2 + date.getMinutes()
-                + seperator2 + date.getSeconds();
+                + seperator2 + date.getSeconds()+seperator2 +date.getUTCMilliseconds();
             return currentdate;
         },
         runprocess(){
 
         },
         runAll() {
-            setInterval(() => {
-                console.log("aaaa");
-            }, 10000)
             var that = this
             console.log(this.selectexeScene)
             let s = new String(this.selectexeScene[0].id)

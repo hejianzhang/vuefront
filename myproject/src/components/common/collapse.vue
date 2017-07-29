@@ -101,6 +101,10 @@ export default {
                     }
 
                 }
+                title=title.reverse()
+                success=success.reverse()
+                fail=fail.reverse()
+                
                app.title = '堆叠条形图';
 
                 var myChart = echarts.init(document.getElementById('main'));
