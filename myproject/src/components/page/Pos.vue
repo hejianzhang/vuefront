@@ -231,7 +231,8 @@
                     <div class="addtestList-wrapper" v-show="show2Right">
                         <div class="often-goods">
                             <div class="title">主键定位
-                                <el-button type="warning" size="small" class="save" @click="close">关闭</el-button>
+                                <el-button type="success" size="small" class="save" @click="save1(often2Goods)">保存当前</el-button>
+                                <el-button type="warning" size="small" class="close" @click="close">关闭</el-button>
                             </div>
                             <div class="often-goods-list">
                                 <ul>
@@ -548,7 +549,29 @@ export default {
             })
 
         },
+        save1(event){
+            console.log(event)
+            this.interface1.id = event.id
+            this.interface1.casename = event.name
+            this.interface1.casedesc = event.desc
+            this.interface1.caseinput = event.input
+            this.interface1.caseexpectResult = event.expectResult
+            axios.post('http://localhost:8081/myapp/mvc/update.do', this.interface1, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
 
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            this.$nextTick(function () {
+
+            })
+        },
         save() {
             this.showRight = !this.showRight
             this.interface1.id = this.oftenGoods.id
@@ -912,7 +935,7 @@ export default {
     height: 20px;
     border-bottom: 1px solid #5599FF;
     background-color: #F9FAFC;
-    padding: 10px;
+    padding: 20px;
 }
 
 .often-goods-list ul li {
