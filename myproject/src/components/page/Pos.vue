@@ -27,8 +27,8 @@
                                 </el-card> -->
     
                     <div class="filter">
-                        <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
-                        </el-input>
+                        <input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
+                        </input>
                         <el-button class="searchbutton" size="small" type="success" @click="search(input)">搜索
                         </el-button>
                         <el-button class="searchbutton" size="small" type="danger" @click="updatedate()">更新
@@ -351,11 +351,11 @@ export default {
         //         alert('网络错误')
         //     })
 
-        axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+        axios.get('http://192.168.44.68:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
             this.mydata1 = response.data
 
         }),
-            axios.get('http://localhost:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            axios.get('http://192.168.44.68:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
                 this.testSuite = response.data
 
             }),
@@ -430,7 +430,7 @@ export default {
                 ids: s,
                 time: that.getNowFormatDate()
             }
-            axios.post('http://localhost:8081/myapp/exResults/add.do', m, {
+            axios.post('http://192.168.44.68:8081/myapp/exResults/add.do', m, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 
@@ -507,7 +507,7 @@ export default {
             this.scene.TestSuiteDesc = this.form.TestSuiteDesc
             this.scene.TestSuiteData = this.form.TestSuiteData
             // this.testSuite.data.push(testSuite)
-            axios.post('http://localhost:8081/myapp/testscene/add.do', this.scene, {
+            axios.post('http://192.168.44.68:8081/myapp/testscene/add.do', this.scene, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 
@@ -537,7 +537,7 @@ export default {
                 ids: testSuite.TestSuiteData
             }
 
-            axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            axios.post('http://192.168.44.68:8081/myapp/mvc/selectMulIds.do', s, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
 
                 this.testSuiteDetails = response.data
 
@@ -553,7 +553,7 @@ export default {
             this.interface1.casedesc = event.desc
             this.interface1.caseinput = event.input
             this.interface1.caseexpectResult = event.expectResult
-            axios.post('http://localhost:8081/myapp/mvc/update.do', this.interface1, {
+            axios.post('http://192.168.44.68:8081/myapp/mvc/update.do', this.interface1, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 
@@ -576,7 +576,7 @@ export default {
             this.interface1.casedesc = this.oftenGoods.desc
             this.interface1.caseinput = this.oftenGoods.input
             this.interface1.caseexpectResult = this.oftenGoods.expectResult
-            axios.post('http://localhost:8081/myapp/mvc/update.do', this.interface1, {
+            axios.post('http://192.168.44.68:8081/myapp/mvc/update.do', this.interface1, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 
@@ -639,7 +639,7 @@ export default {
 
             }
 
-            axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
+            axios.post('http://192.168.44.68:8081/myapp/testscene/update.do', this.testSuiteClick, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 
@@ -696,7 +696,7 @@ export default {
 
         },
         updatedate() {
-            axios.get('http://localhost:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            axios.get('http://192.168.44.68:8081/myapp/mvc/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
                 this.mydata1 = response.data
 
             }),
@@ -767,7 +767,7 @@ export default {
 
         },
         updatescene() {
-            axios.get('http://localhost:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            axios.get('http://192.168.44.68:8081/myapp/testscene/selectAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
                 this.testSuite = response.data
 
             }),
@@ -777,7 +777,7 @@ export default {
         },
         deletescenedata(index, testscene) {
             var that = this
-            axios.post('http://localhost:8081/myapp/testscene/delete.do', testscene.id, {
+            axios.post('http://192.168.44.68:8081/myapp/testscene/delete.do', testscene.id, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 
@@ -790,7 +790,7 @@ export default {
                         ids: "0"
                     }
 
-                    axios.post('http://localhost:8081/myapp/mvc/selectMulIds.do', s, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+                    axios.post('http://192.168.44.68:8081/myapp/mvc/selectMulIds.do', s, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
 
                         that.testSuiteDetails = response.data
 
@@ -807,7 +807,7 @@ export default {
         },
         deltestdata(index, testcase) {
             var that = this
-            axios.post('http://localhost:8081/myapp/mvc/delete.do', testcase.id, {
+            axios.post('http://192.168.44.68:8081/myapp/mvc/delete.do', testcase.id, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 
@@ -836,7 +836,7 @@ export default {
             var ss = this.testSuiteClick.TestSuiteData.split(",")
             ss.splice(index, 1)
             this.testSuiteClick.TestSuiteData = ss.toString()
-            axios.post('http://localhost:8081/myapp/testscene/update.do', this.testSuiteClick, {
+            axios.post('http://192.168.44.68:8081/myapp/testscene/update.do', this.testSuiteClick, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
 

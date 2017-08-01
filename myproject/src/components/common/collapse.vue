@@ -1,6 +1,6 @@
 <template>
     <div class="testRunResults">
-        <el-input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口"> </el-input>
+        <input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口"> </input>
         <el-button class="searchbutton" size="small" type="success" @click="searchResults(input)">搜索</el-button>
         <el-button class="searchbutton" size="small" type="primary" @click="refresh">刷新</el-button>
         <div v-for="(item,index) in ss">
@@ -77,7 +77,7 @@ export default {
         },
         refresh() {
             var that = this
-            axios.get('http://localhost:8081/myapp/exResults/getAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            axios.get('http://192.168.44.68:8081/myapp/exResults/getAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
                 that.ss = response.data
                 that.title = response.data
                 var title = []
