@@ -74,8 +74,9 @@
                                                 </el-card>
                                                 -->
     
-                                <div >
-                                    <span class="title">场景列表
+                                
+                                     <div class="title">
+                                    <span class="suitesize">场景列表
                                         <el-button type="warning" size="small" @click="selectadd()">批量添加选择测试场景</el-button>
                                         <el-button type="success" size="small" class="dialog" @click="dialogFormVisible = true">添加新的测试集合</el-button>
     
@@ -98,7 +99,8 @@
                                             </div>
                                         </el-dialog>
                                     </span>
-                                </div>
+                                    </div>
+                                
                                
                                     <el-table :data="testSuite.data" border  max-height="300" @selection-change="handleSelectionChange">
                                         <el-table-column type="selection" width="80px">
