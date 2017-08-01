@@ -1,30 +1,30 @@
 <template>
-    <div class="pos">
+    <div class="pos" style="height:100%;overflow:auto;">
         <div class="order-list">
             <el-tabs @tab-click="handleClick">
     
                 <el-tab-pane label="测试用例集合">
                     <!-- <el-card height="200px" width="100%" class="box-card">
-                               <div slot="header" class="clearfix">
-                                    <span style="line-height: 18px;">登陆信息</span>
-                                    <el-button style="float: right;" type="warning" @click="fresh">刷新</el-button>
-                               </div>
-                               <div class='text item'>brokerId:
-                                    <span class="userlogininfo">{{mydata1.brokerID}}</span>
-                                </div>
-                                 <div class='text item'>密码:
-                                    <span class="userlogininfo">{{mydata1.password}}</span>
-                                </div>
-                                 <div class='text item'>spi:
-                                    <span class="userlogininfo">{{mydata1.spi}}</span>
-                                </div>
-                                 <div class='text item'>系统:
-                                    <span class="userlogininfo">{{mydata1.system}}</span>
-                                </div>
-                                <div class='text item'>用户:
-                                    <span class="userlogininfo">{{mydata1.userID}}</span>
-                                </div>
-                                </el-card> -->
+                                               <div slot="header" class="clearfix">
+                                                    <span style="line-height: 18px;">登陆信息</span>
+                                                    <el-button style="float: right;" type="warning" @click="fresh">刷新</el-button>
+                                               </div>
+                                               <div class='text item'>brokerId:
+                                                    <span class="userlogininfo">{{mydata1.brokerID}}</span>
+                                                </div>
+                                                 <div class='text item'>密码:
+                                                    <span class="userlogininfo">{{mydata1.password}}</span>
+                                                </div>
+                                                 <div class='text item'>spi:
+                                                    <span class="userlogininfo">{{mydata1.spi}}</span>
+                                                </div>
+                                                 <div class='text item'>系统:
+                                                    <span class="userlogininfo">{{mydata1.system}}</span>
+                                                </div>
+                                                <div class='text item'>用户:
+                                                    <span class="userlogininfo">{{mydata1.userID}}</span>
+                                                </div>
+                                                </el-card> -->
     
                     <div class="filter">
                         <input class="input" v-model="input" size="small" width="30px" placeholder="请输入筛选接口">
@@ -55,8 +55,138 @@
                         </el-table-column>
                     </el-table>
                 </el-tab-pane>
+                <el-tab-pane label="场景列表">
     
-                <el-tab-pane label="测试场景">
+                    <el-row>
+                        <div id="order-list" class="pos-order">
+                            <el-tabs>
+                                <!-- <!--  
+                                                     <el-card height="100px" class="box-card1s">
+                                               <div class='text item'>用例集:
+                                                    <span class="userlogininfo">{{testSuite.name}}</span>
+                                                </div>
+                                                 <div class='text item'>回调函数:
+                                                    <span class="userlogininfo">{{mydata1.spi}}</span>
+                                                </div>
+                                                 <div class='text item'>系统:
+                                                    <span class="userlogininfo">{{mydata1.system}}</span>
+                                                </div>
+                                                </el-card>
+                                                -->
+    
+                                <div >
+                                    <span class="title">场景列表
+                                        <el-button type="warning" size="small" @click="selectadd()">批量添加选择测试场景</el-button>
+                                        <el-button type="success" size="small" class="dialog" @click="dialogFormVisible = true">添加新的测试集合</el-button>
+    
+                                        <el-dialog title="集合" :visible.sync="dialogFormVisible">
+                                            <el-form :model="form">
+                                                <el-form-item label="集合名称" :label-width="formLabelWidth">
+                                                    <el-input v-model="form.TestSuite" auto-complete="off"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="集合描述" :label-width="formLabelWidth">
+                                                    <el-input v-model="form.TestSuiteDesc" auto-complete="off"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="测试用例" :label-width="formLabelWidth">
+                                                    <el-input v-model="form.TestSuiteData" auto-complete="off"></el-input>
+                                                </el-form-item>
+    
+                                            </el-form>
+                                            <div slot="footer" class="dialog-footer">
+                                                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                                                <el-button type="primary" @click="addnewTestsuite()">确 定</el-button>
+                                            </div>
+                                        </el-dialog>
+                                    </span>
+                                </div>
+                               
+                                    <el-table :data="testSuite.data" border  max-height="300" @selection-change="handleSelectionChange">
+                                        <el-table-column type="selection" width="80px">
+    
+                                        </el-table-column>
+                                        <el-table-column type="index" width="80px"></el-table-column>
+                                        <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
+                                        <el-table-column prop="TestSuite" label="场景名称" width="240px"></el-table-column>
+                                        <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" width="500px"></el-table-column>
+                                        <el-table-column label="操作" min-width="50%">
+                                            <template scope="scope">
+                                                <el-button type="danger" size="small" @click="addtestscene(scope.row)">组合</el-button>
+                                                <el-button type="primary" size="small" @click="deletescenedata(scope.$index, scope.row)">删除</el-button>
+                                                <el-button type="warning" size="small" @click="addSuiteList(scope.row)">增加</el-button>
+                                                <el-button type="success" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                
+                                   <div class="title">
+                                    <span class="suitesize">{{testSuiteClick.TestSuite}}</span>
+                               
+                                   </div>
+                                    <el-table :data="testSuiteDetails"  max-height="500" border>
+                                        <el-table-column type="index" width="60px"></el-table-column>
+                                        <el-table-column prop="id" label="序号" sortable size="small" width="120px"></el-table-column>
+                                        <el-table-column prop="name" label="接口名称" sortable width="300px"></el-table-column>
+                                        <el-table-column prop="desc" size="small" label="场景描述" width="360px"></el-table-column>
+                                        <el-table-column label="操作" min-width="50%">
+                                            <template scope="scope">
+                                                <el-button type="success" size="small" @click="deltestcase(scope.$index, scope.row)">删除</el-button>
+                                                <el-button type="warning" size="small" @click="showTestDetail1(scope.row)">展示</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                
+                            </el-tabs>
+                        </div>
+    
+                        <div class="addtestList-wrapper" v-show="show2Right">
+                            <div class="often-goods">
+                                <div >主键定位
+                                    <el-button type="success" size="small" class="save" @click="save1(often2Goods)">保存当前</el-button>
+                                    <el-button type="warning" size="small" class="close" @click="close">关闭</el-button>
+                                </div>
+                                <div class="often-goods-list">
+                                    <ul>
+                                        <li>
+                                            <i>id: </i>
+                                            <input class="o-price" disabled=true v-model="often2Goods.id" />
+                                        </li>
+                                        <li>
+                                            <i>name: </i>
+                                            <input class="o-price" disabled=true v-model="often2Goods.name" />
+                                        </li>
+                                        <li>
+                                            <i>desc: </i>
+                                            <input class="o-price " v-model="often2Goods.desc" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div >输入值</div>
+                                <div class="often-goods-list">
+                                    <ul>
+                                        <li v-for="(key,value) in often2Goods.input">
+                                            <i>{{value}}:
+                                                <input class="o-price" v-model="often2Goods.input[value]
+                                                                        "></input>
+                                            </i>
+    
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div >输出结果</div>
+                                <div class="often-goods-list">
+                                    <ul>
+                                        <li v-for="(key,value) in often2Goods.expectResult">
+                                            <i>{{value}}:
+                                                <input class="o-price" v-model="often2Goods.expectResult[value]" /> </i>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </el-row>
+    
+                </el-tab-pane>
+                <el-tab-pane label="测试执行">
                     <div class="hello">
                         <el-table :data="testscene" border @selection-change="handleSelectionChange2">
                             <el-table-column type="selection" width="50px"></el-table-column>
@@ -66,12 +196,12 @@
                             <el-table-column prop="TestSuiteDesc" label="场景描述" width="260"></el-table-column>
                             <el-table-column prop="TestSuiteData" label="用例ID" width="260"></el-table-column>
                             <!-- <el-table-column label="执行进度" width="160">
-                                <template scope="scope">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
-    
-                                </template>
-    
-                            </el-table-column> -->
+                                                <template scope="scope">
+                                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+                    
+                                                </template>
+                    
+                                            </el-table-column> -->
                             <el-table-column label="操作" width="400">
     
                                 <template scope="scope">
@@ -95,7 +225,7 @@
     
         <div class="addtestList-wrapper" v-show="showRight">
             <div class="often-goods">
-                <div class="title">主键定位
+                <div >主键定位
     
                     <el-button type="warning" size="small" class="save" @click="save">保存当前</el-button>
                 </div>
@@ -115,19 +245,19 @@
                         </li>
                     </ul>
                 </div>
-                <div class="title">输入值</div>
+                <div >输入值</div>
                 <div class="often-goods-list">
                     <ul>
                         <li v-for="(key,value) in oftenGoods.input">
                             <i>{{value}}:
                                 <input class="o-price" v-model="oftenGoods.input[value]
-                                                        "></input>
+                                                                        "></input>
                             </i>
     
                         </li>
                     </ul>
                 </div>
-                <div class="title">输出结果</div>
+                <div >输出结果</div>
                 <div class="often-goods-list">
                     <ul>
                         <li v-for="(key,value) in oftenGoods.expectResult">
@@ -145,136 +275,7 @@
             <div class="newinterface" v-show="InterfaceFlag">
                 <addInterface :testdata="mydata1.testdata"></addInterface>
             </div>
-            <div class="addtestList-wrapper" v-show="fold">
-                <div class="title">
-                    <span class="suitesize">添加到场景</span>
-                    <el-button type="success" size="small" class="dialog" @click="dialogFormVisible = true">添加新的测试集合</el-button>
     
-                    <el-dialog title="集合" :visible.sync="dialogFormVisible">
-                        <el-form :model="form">
-                            <el-form-item label="集合名称" :label-width="formLabelWidth">
-                                <el-input v-model="form.TestSuite" auto-complete="off"></el-input>
-                            </el-form-item>
-                            <el-form-item label="集合描述" :label-width="formLabelWidth">
-                                <el-input v-model="form.TestSuiteDesc" auto-complete="off"></el-input>
-                            </el-form-item>
-                            <el-form-item label="测试用例" :label-width="formLabelWidth">
-                                <el-input v-model="form.TestSuiteData" auto-complete="off"></el-input>
-                            </el-form-item>
-    
-                        </el-form>
-                        <div slot="footer" class="dialog-footer">
-                            <el-button @click="dialogFormVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="addnewTestsuite()">确 定</el-button>
-                        </div>
-                    </el-dialog>
-                    <el-button type="warning" size="small" class="save" @click="quit()">退出</el-button>
-                </div>
-                <el-row>
-                    <div id="order-list" class="pos-order">
-                        <el-tabs>
-                            <!-- <!--  
-                                     <el-card height="100px" class="box-card1s">
-                               <div class='text item'>用例集:
-                                    <span class="userlogininfo">{{testSuite.name}}</span>
-                                </div>
-                                 <div class='text item'>回调函数:
-                                    <span class="userlogininfo">{{mydata1.spi}}</span>
-                                </div>
-                                 <div class='text item'>系统:
-                                    <span class="userlogininfo">{{mydata1.system}}</span>
-                                </div>
-                                </el-card>
-                                -->
-    
-                            <div class="title">
-                                <span class="suitesize">场景集合
-                                    <el-button type="warning" size="small" @click="selectadd()">批量添加选择测试场景</el-button>
-                                </span>
-                            </div>
-                            <el-table :data="testSuite.data" border @selection-change="handleSelectionChange">
-                                <el-table-column type="selection" width="80px">
-    
-                                </el-table-column>
-                                <el-table-column type="index" width="80px"></el-table-column>
-                                <!-- <el-table-column prop="id" label="序号" size="small" min-width="10%"></el-table-column> -->
-                                <el-table-column prop="TestSuite" label="场景名称" width="240px"></el-table-column>
-                                <el-table-column prop="TestSuiteDesc" size="small" label="场景描述" width="500px"></el-table-column>
-                                <el-table-column label="操作" width="330px">
-                                    <template scope="scope">
-                                        <el-button type="danger" size="small" @click="addtestscene(scope.row)">组合</el-button>
-                                        <el-button type="primary" size="small" @click="deletescenedata(scope.$index, scope.row)">删除</el-button>
-                                        <el-button type="warning" size="small" @click="addSuiteList(scope.row)">增加</el-button>
-                                        <el-button type="success" size="small" @click="showTestSuiteDetail(scope.row)">展示</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <div class="title">
-                                <span class="suitesize">场景用例展示集合</span>
-                            </div>
-                            <el-table :data="testSuiteDetails" border>
-                                <el-table-column type="index" width="60px"></el-table-column>
-                                <el-table-column prop="id" label="序号" sortable size="small" width="120px"></el-table-column>
-                                <el-table-column prop="name" label="接口名称" sortable width="300px"></el-table-column>
-                                <el-table-column prop="desc" size="small" label="场景描述" width="360px"></el-table-column>
-                                <el-table-column label="操作" width="330px">
-                                    <template scope="scope">
-                                        <el-button type="success" size="small" @click="deltestcase(scope.$index, scope.row)">删除</el-button>
-                                        <el-button type="warning" size="small" @click="showTestDetail1(scope.row)">展示</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-    
-                        </el-tabs>
-                    </div>
-    
-                    <div class="addtestList-wrapper" v-show="show2Right">
-                        <div class="often-goods">
-                            <div class="title">主键定位
-                                <el-button type="success" size="small" class="save" @click="save1(often2Goods)">保存当前</el-button>
-                                <el-button type="warning" size="small" class="close" @click="close">关闭</el-button>
-                            </div>
-                            <div class="often-goods-list">
-                                <ul>
-                                    <li>
-                                        <i>id: </i>
-                                        <input class="o-price" disabled=true v-model="often2Goods.id" />
-                                    </li>
-                                    <li>
-                                        <i>name: </i>
-                                        <input class="o-price" disabled=true v-model="often2Goods.name" />
-                                    </li>
-                                    <li>
-                                        <i>desc: </i>
-                                        <input class="o-price " v-model="often2Goods.desc" />
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="title">输入值</div>
-                            <div class="often-goods-list">
-                                <ul>
-                                    <li v-for="(key,value) in often2Goods.input">
-                                        <i>{{value}}:
-                                            <input class="o-price" v-model="often2Goods.input[value]
-                                                        "></input>
-                                        </i>
-    
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="title">输出结果</div>
-                            <div class="often-goods-list">
-                                <ul>
-                                    <li v-for="(key,value) in often2Goods.expectResult">
-                                        <i>{{value}}:
-                                            <input class="o-price" v-model="often2Goods.expectResult[value]" /> </i>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </el-row>
-            </div>
         </div>
     </div>
 </template>
@@ -408,10 +409,10 @@ export default {
             }
             var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
                 + " " + date.getHours() + seperator2 + date.getMinutes()
-                + seperator2 + date.getSeconds()+seperator2 +date.getUTCMilliseconds();
+                + seperator2 + date.getSeconds() + seperator2 + date.getUTCMilliseconds();
             return currentdate;
         },
-        runprocess(){
+        runprocess() {
 
         },
         runAll() {
@@ -546,7 +547,7 @@ export default {
             })
 
         },
-        save1(event){
+        save1(event) {
             console.log(event)
             this.interface1.id = event.id
             this.interface1.casename = event.name
@@ -930,6 +931,7 @@ export default {
 
 .title {
     height: 20px;
+    border-top: 1px solid #5599FF;
     border-bottom: 1px solid #5599FF;
     background-color: #F9FAFC;
     padding: 20px;
@@ -986,6 +988,10 @@ export default {
     position: absolute;
     right: 50px;
 }
+
+
+
+
 
 
 /* .el-table::after{

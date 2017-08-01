@@ -2,7 +2,7 @@
   <div id="app">
     <!--左侧导航-->
 
-        <leftNav></leftNav>
+         <leftNav></leftNav> 
 
     <!--操作区域-->
     <div class="main">
