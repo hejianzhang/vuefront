@@ -12,8 +12,9 @@
                             <div>
                                 <el-table :data="key[Object.keys(key)[0]].data" border>
                                     <el-table-column prop="name" label="接口" size="small" width="240px"></el-table-column>
+                                    <el-table-column prop="testdata" label="结果" width="240px"></el-table-column>
     
-                                    <el-table-column prop="testdata" label="结果" width="480px"></el-table-column>
+                                    <el-table-column prop="input" label="输入值" min-width="40%"></el-table-column>
                                     <!-- <el-table-column prop="desc" size="small" label="描述" min-width="30%"></el-table-column> -->
     
                                 </el-table>
@@ -77,8 +78,9 @@ export default {
         },
         refresh() {
             var that = this
-            axios.get('http://192.168.44.68:8081/myapp/exResults/getAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
+            axios.get('http://localhost:8081/myapp/exResults/getAll.do', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(response => {
                 that.ss = response.data
+                console.log(that.ss)
                 that.title = response.data
                 var title = []
                 var total = []

@@ -64,7 +64,7 @@
        this.interface1.caseinput=this.interface.input
        this.interface1.caseexpectResult=this.interface.expectResult
        var that=this.$parent
-       axios.post('http://192.168.44.68:8081/myapp/mvc/add.do', this.interface1, {
+       axios.post('http://localhost:8081/myapp/mvc/add.do', this.interface1, {
                       headers: {
                            'X-Requested-With': 'XMLHttpRequest',
                            
